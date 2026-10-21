@@ -11,7 +11,7 @@ Set SITE_URL once you have a domain; it turns on canonical links and sitemap.xml
 """
 import datetime, hashlib, html, json, pathlib, re, shutil, sys, zipfile
 
-SITE_URL = ""          # e.g. "https://prizebondcheck.com" (no trailing slash)
+SITE_URL = "https://checkprizebond.com"          # e.g. "https://prizebondcheck.com" (no trailing slash)
 SITE_NAME = "PrizeBond Check"
 SITE_NAME_BN = "প্রাইজবন্ড চেক"
 
