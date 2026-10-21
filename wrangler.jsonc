@@ -1,0 +1,10 @@
+// Cloudflare settings: publish the finished website in site/ (no server code).
+// "name" must match the Worker's name in the Cloudflare dashboard.
+{
+  "name": "prizebond-check-website",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "404-page"
+  }
+}

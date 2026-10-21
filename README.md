@@ -16,8 +16,9 @@ Everything runs in the visitor's browser; no server, no data leaves their device
 
 ## Hosting
 
-Cloudflare Pages, connected to this repository:
-build command **none**, build output directory **`site`**. Every push to `main` goes live.
+Cloudflare Workers (static assets), connected to this repository. `wrangler.jsonc` tells
+Cloudflare to publish the `site/` folder; no build runs on Cloudflare. Every push to `main`
+goes live within a minute. Page addresses are clean (`/124th-prize-bond-draw-result`).
 
 ## After a new draw
 

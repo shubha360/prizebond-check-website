@@ -28,7 +28,8 @@ TODAY = datetime.date.today()
 def ordinal(n):
     v = n % 100
     return f"{n}{'th' if 10 <= v <= 20 else {1:'st',2:'nd',3:'rd'}.get(n % 10, 'th')}"
-def slug(n): return f"{ordinal(n)}-prize-bond-draw-result.html"
+def slug(n): return f"{ordinal(n)}-prize-bond-draw-result.html"          # file name
+def href(n, ext): return f"{ordinal(n)}-prize-bond-draw-result{ext}"     # link: clean on the live site, .html in the artifact preview
 def pdate(s): return datetime.date.fromisoformat(s)
 def fdate(d): return f"{d.day} {MONTHS[d.month-1]} {d.year}"
 def fdate_long(d): return f"{d.day} {MONTHS_LONG[d.month-1]} {d.year}"
@@ -66,9 +67,9 @@ def claim_until(d):
     dl = pdate(d["date"]).replace(year=pdate(d["date"]).year + 2)
     return ("Claim period over" if dl < TODAY else f"Claimable until {fdate(dl)}"), dl
 
-def static_board(d, page_draw):
+def static_board(d, page_draw, ext):
     txt, _ = claim_until(d)
-    link = "" if d["no"] == page_draw else f' · <a href="{slug(d["no"])}">Result page</a>'
+    link = "" if d["no"] == page_draw else f' · <a href="{href(d["no"], ext)}">Result page</a>'
     h = f'<div class="board-meta"><span>{ordinal(d["no"])} draw · Held {fdate(pdate(d["date"]))}{link}</span><span>{txt}</span></div>\n'
     for k, amt, name in PRIZES:
         ns = d[k]
@@ -77,11 +78,11 @@ def static_board(d, page_draw):
               f'<div class="nums">{"".join(f"<span>{n}</span>" for n in ns)}</div></div>\n')
     return h
 
-def links(page_draw):
+def links(page_draw, ext):
     out = []
     for d in slim:
         cur = ' aria-current="page"' if d["no"] == page_draw else ""
-        out.append(f'      <li><a href="{slug(d["no"])}" data-no="{d["no"]}"{cur}><b>{ordinal(d["no"])} draw</b><span>{fdate(pdate(d["date"]))}</span></a></li>')
+        out.append(f'      <li><a href="{href(d["no"], ext)}" data-no="{d["no"]}"{cur}><b>{ordinal(d["no"])} draw</b><span>{fdate(pdate(d["date"]))}</span></a></li>')
     return "\n".join(out)
 
 def bi(tag, en, bn, cls=""):
@@ -128,15 +129,15 @@ def head(title, desc, path, extra_ld=(), artifact=False):
     h += [jsonld(x) for x in extra_ld]
     return "\n".join(h)
 
-def page(intro, order, page_draw, board_draw, faq, head_html, home):
+def page(intro, order, page_draw, board_draw, faq, head_html, home, ext=""):
     s = tpl.replace("<!--HEAD-->", head_html)
     s = s.replace("<!--SECTION:intro-->", intro)
     s = s.replace("<!--SECTION:order-->", "\n".join(blocks[b] for b in order))
-    s = s.replace("<!--SECTION:board-->", static_board(board_draw, page_draw))
-    s = s.replace("<!--SECTION:links-->", links(page_draw))
+    s = s.replace("<!--SECTION:board-->", static_board(board_draw, page_draw, ext))
+    s = s.replace("<!--SECTION:links-->", links(page_draw, ext))
     s = s.replace("<!--SECTION:faq-->", faq)
     s = s.replace("/*__DRAWS__*/[]", DATA)
-    s = s.replace("/*__PAGE__*/{draw:null}", json.dumps({"draw": page_draw, "home": home}))
+    s = s.replace("/*__PAGE__*/{draw:null,ext:\"\"}", json.dumps({"draw": page_draw, "home": home, "ext": ext}))
     assert "<!--" not in s.replace("<!--HEAD-->", ""), "unfilled placeholder"
     return s
 
@@ -173,7 +174,7 @@ pages = {}   # filename -> page body
 art_pages = {}
 home_args = (home_intro, ["checker", "claim", "ledger"], None, latest, faq_html())
 pages["index.html"] = page(*home_args, head(HOME_TITLE, HOME_DESC, "", home_ld), True)
-artifact_home = page(*home_args, head(SITE_NAME, HOME_DESC, "", artifact=True), True)
+artifact_home = page(*home_args, head(SITE_NAME, HOME_DESC, "", artifact=True), True, ".html")
 
 for d in slim:
     n, dt = d["no"], pdate(d["date"])
@@ -191,9 +192,9 @@ for d in slim:
     <p class="lede" id="dlede">{e(lede)}</p>
   </section>'''
     ld = [{"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "inLanguage": ["en", "bn"],
-           "datePublished": d["date"], **({"url": f"{SITE_URL}/{slug(n)}"} if SITE_URL else {})}]
-    pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, slug(n), ld), False)
-    art_pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, slug(n), artifact=True), False)
+           "datePublished": d["date"], **({"url": f"{SITE_URL}/{href(n, '')}"} if SITE_URL else {})}]
+    pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), ld), False)
+    art_pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), artifact=True), False, ".html")
 
 # ---------------- write site/ ----------------
 SITE = HERE / "site"
@@ -246,7 +247,7 @@ manifest = {"name": f"{SITE_NAME} · {SITE_NAME_BN}", "short_name": SITE_NAME, "
                       {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}
 (SITE / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
 
-core = ["./", *pages.keys(), "manifest.webmanifest", "vendor/xlsx.full.min.js",
+core = ["./", *[href(d["no"], "") for d in slim], "manifest.webmanifest", "vendor/xlsx.full.min.js",
         "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png"]
 version = hashlib.sha1("".join(pages.values()).encode()).hexdigest()[:10]
 sw = f"""/* PrizeBond Check offline support. Pages: network first, so new draws show up. Everything else: cache first. */
@@ -269,10 +270,16 @@ self.addEventListener("fetch",e=>{{
 }});
 """
 (SITE / "sw.js").write_text(sw, encoding="utf-8")
+notfound = page('''  <section class="intro">
+    <h1>Page not found</h1>
+    <p class="sub" data-ien="This page doesn't exist" data-ibn="এই পাতাটি নেই">This page doesn't exist</p>
+    <p class="lede"><a href="./">Go to the prize bond checker</a> to check your bonds against all recent draws.</p>
+  </section>''', ["checker"], None, latest, "", "<title>Page not found · PrizeBond Check</title>\n<meta name=\"robots\" content=\"noindex\">", False)
+(SITE / "404.html").write_text(standalone(notfound), encoding="utf-8")
 robots = "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else "")
 (SITE / "robots.txt").write_text(robots, encoding="utf-8")
 if SITE_URL:
-    urls = [("", latest["date"])] + [(slug(d["no"]), d["date"]) for d in slim]
+    urls = [("", latest["date"])] + [(href(d["no"], ""), d["date"]) for d in slim]
     sm = "".join(f"<url><loc>{SITE_URL}/{p}</loc><lastmod>{m}</lastmod></url>" for p, m in urls)
     (SITE / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>', encoding="utf-8")
 

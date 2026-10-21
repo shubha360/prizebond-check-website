@@ -352,7 +352,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 
 <script>
 const DRAWS = /*__DRAWS__*/[];
-const PAGE = /*__PAGE__*/{draw:null};
+const PAGE = /*__PAGE__*/{draw:null,ext:""};
 const NEXT_DRAW = {no:125, date:"2026-10-31"};
 const PRIZES = [
   {k:"first", amt:600000, en:"1st prize", bn:"১ম পুরস্কার"},
@@ -366,7 +366,7 @@ const EXAMPLE = "কখ 0123456, কঝ 0786345\nAbbu: 05059760139380\n0400100-0
 const BN_D="০১২৩৪৫৬৭৮৯";
 function bn(x){return String(x).replace(/\d/g,d=>BN_D[d])}
 function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
-const slug=n=>`${ordinal(n)}-prize-bond-draw-result.html`;
+const slug=n=>`${ordinal(n)}-prize-bond-draw-result${PAGE.ext||""}`;
 
 const T = {
  en:{brand:"PrizeBond Check",free:"Free · no sign-up · no ads",h1:"Prize bond result check: all your bonds in one go",
