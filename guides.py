@@ -84,18 +84,18 @@ def schedule_body(ext, c):
 <tr><td>৫ম পুরস্কার</td><td class="n">৳১০,০০০</td><td class="n">৪০</td></tr>"""
 
     return f"""<div class="l-en" lang="en">
-<p>Bangladesh Bank holds the 100 Taka prize bond draw four times a year: on <b>31 January, 30 April, 31 July and 31 October</b>. When that date falls on the weekend (Friday or Saturday) or a public holiday, the draw is held on the next working day. For example, the 124th draw, scheduled for Friday 31 July 2026, was held on Sunday 2 August.</p>
+<p>The 100 Taka prize bond draw is held four times a year, at the Dhaka Divisional Commissioner's office, and Bangladesh Bank publishes the results. The draws are scheduled for <b>31 January, 30 April, 31 July and 31 October</b>. When that date falls on the weekend (Friday or Saturday) or a public holiday, the draw is held on the next working day. For example, the 124th draw, scheduled for Friday 31 July 2026, was held on Sunday 2 August.</p>
 <h2>Upcoming draws</h2>
 <div class="tbl"><table><thead><tr><th>Draw</th><th>Scheduled date</th><th>Day</th><th>Note</th></tr></thead><tbody>
 {up_rows(False)}
 </tbody></table></div>
-<p>Results come out on the day of the draw. PrizeBond Check adds the winning numbers the same evening, after checking them against two sources.</p>
+<p>Results are usually announced on the day of the draw and printed in national newspapers the next day. PrizeBond Check adds the winning numbers as soon as two sources agree, usually the same evening.</p>
 <h2>Prizes in every draw</h2>
-<p>Each draw picks 46 winning numbers. Bangladesh Bank uses a single common draw, so the same numbers win in every series (কক, কখ and so on).</p>
+<p>Each draw picks 46 winning numbers. It is a single common draw, so the same numbers win in every series (কক, কখ and so on).</p>
 <div class="tbl"><table><thead><tr><th>Prize</th><th>Amount</th><th>Winning numbers</th></tr></thead><tbody>
 {prizes_en}
 </tbody></table></div>
-<p class="src">Tax is deducted from the prize at source. Every bond takes part in every draw held at least 60 days after it was bought.</p>
+<p class="src">Tax is deducted from the prize at source. A bond takes part in every draw held at least 2 months after the sale date written on it.</p>
 <h2>Recent draws</h2>
 <p>Prizes can be claimed for 2 years after the draw date, so these are the draws you can still win from.</p>
 <div class="tbl"><table><thead><tr><th>Draw</th><th>Held</th><th>1st prize number</th><th>Claim by</th></tr></thead><tbody>
@@ -103,18 +103,18 @@ def schedule_body(ext, c):
 </tbody></table></div>
 </div>
 <div class="l-bn" lang="bn">
-<p>বাংলাদেশ ব্যাংক বছরে চারবার ১০০ টাকার প্রাইজবন্ডের ড্র করে: <b>৩১ জানুয়ারি, ৩০ এপ্রিল, ৩১ জুলাই ও ৩১ অক্টোবর</b>। ওই তারিখ সাপ্তাহিক ছুটির দিন (শুক্র বা শনিবার) বা সরকারি ছুটির দিনে পড়লে পরের কর্মদিবসে ড্র হয়। যেমন, শুক্রবার ৩১ জুলাই ২০২৬-এর ১২৪তম ড্র অনুষ্ঠিত হয় রবিবার ২ আগস্ট।</p>
+<p>১০০ টাকার প্রাইজবন্ডের ড্র বছরে চারবার ঢাকার বিভাগীয় কমিশনারের কার্যালয়ে অনুষ্ঠিত হয়, আর বাংলাদেশ ব্যাংক ফলাফল প্রকাশ করে। ড্রয়ের নির্ধারিত তারিখ <b>৩১ জানুয়ারি, ৩০ এপ্রিল, ৩১ জুলাই ও ৩১ অক্টোবর</b>। ওই তারিখ সাপ্তাহিক ছুটির দিন (শুক্র বা শনিবার) বা সরকারি ছুটির দিনে পড়লে পরের কর্মদিবসে ড্র হয়। যেমন, শুক্রবার ৩১ জুলাই ২০২৬-এর ১২৪তম ড্র অনুষ্ঠিত হয় রবিবার ২ আগস্ট।</p>
 <h2>আসন্ন ড্র</h2>
 <div class="tbl"><table><thead><tr><th>ড্র</th><th>নির্ধারিত তারিখ</th><th>বার</th><th>মন্তব্য</th></tr></thead><tbody>
 {up_rows(True)}
 </tbody></table></div>
-<p>ড্রয়ের দিনই ফলাফল প্রকাশ হয়। প্রাইজবন্ড চেক দুটি উৎসের সাথে মিলিয়ে সেদিন সন্ধ্যাতেই বিজয়ী নম্বর যোগ করে।</p>
+<p>সাধারণত ড্রয়ের দিনই ফলাফল ঘোষণা হয় এবং পরদিন জাতীয় দৈনিকে ছাপা হয়। দুটি উৎস মিলে গেলেই প্রাইজবন্ড চেক বিজয়ী নম্বর যোগ করে, সাধারণত সেদিন সন্ধ্যাতেই।</p>
 <h2>প্রতিটি ড্রয়ের পুরস্কার</h2>
-<p>প্রতিটি ড্রয়ে ৪৬টি বিজয়ী নম্বর বাছাই হয়। বাংলাদেশ ব্যাংক সিঙ্গেল কমন ড্র পদ্ধতিতে ড্র করে, তাই সব সিরিজে (কক, কখ ইত্যাদি) একই নম্বর পুরস্কার পায়।</p>
+<p>প্রতিটি ড্রয়ে ৪৬টি বিজয়ী নম্বর বাছাই হয়। ড্র হয় সিঙ্গেল কমন ড্র পদ্ধতিতে, তাই সব সিরিজে (কক, কখ ইত্যাদি) একই নম্বর পুরস্কার পায়।</p>
 <div class="tbl"><table><thead><tr><th>পুরস্কার</th><th>পরিমাণ</th><th>বিজয়ী নম্বর</th></tr></thead><tbody>
 {prizes_bn}
 </tbody></table></div>
-<p class="src">পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়। কেনার অন্তত ৬০ দিন পরের প্রতিটি ড্রয়ে বন্ড অংশ নেয়।</p>
+<p class="src">পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়। বন্ডে লেখা বিক্রির তারিখ থেকে অন্তত ২ মাস পরের প্রতিটি ড্রয়ে বন্ড অংশ নেয়।</p>
 <h2>সাম্প্রতিক ড্র</h2>
 <p>ড্রয়ের তারিখ থেকে ২ বছর পর্যন্ত পুরস্কার দাবি করা যায়, তাই এই ড্রগুলোতে এখনো পুরস্কার পেতে পারেন।</p>
 <div class="tbl"><table><thead><tr><th>ড্র</th><th>অনুষ্ঠিত</th><th>১ম পুরস্কারের নম্বর</th><th>দাবির শেষ তারিখ</th></tr></thead><tbody>
@@ -164,14 +164,14 @@ def claim_body(ext, c):
 <li>The original winning bond, with your signature once on the back</li>
 <li>A copy of your national ID card (NID)</li>
 <li>A copy of a cheque leaf (MICR cheque) from your bank account. The prize is paid into this account.</li>
-<li>One recent photograph</li>
+<li>One passport-size photograph</li>
 </ol>
 <h2>Step by step</h2>
 <ol>
 <li><b>Fill in the form.</b> It asks for your name, father's name, present and permanent address, NID number, TIN, mobile number and bank account details (account name, number and routing number), plus the bond's series, number, draw number, draw date and prize amount.</li>
 <li><b>Sign the back of the winning bond once.</b> The form asks for exactly one signature there.</li>
-<li><b>Have your bank verify the form.</b> The form has a section where an officer of your bank signs and stamps it. Take it to your branch.</li>
-<li><b>Submit it at a Bangladesh Bank office</b> with the bond and the copies. The form lists Bangladesh Bank's offices, including Motijheel and Sadarghat in Dhaka, Chattogram, Rajshahi, Khulna, Barishal, Sylhet and Rangpur. Keep a copy of everything you hand in.</li>
+<li><b>Get the form attested.</b> The current form has a section where an officer of your bank signs and stamps it, so take it to your branch. Some offices also ask for attestation by a gazetted officer, so check when you submit.</li>
+<li><b>Submit it</b> with the bond and the copies at any Bangladesh Bank office except Mymensingh, such as Motijheel or Sadarghat in Dhaka, Chattogram, Rajshahi, Khulna, Barishal, Sylhet or Rangpur. According to The Daily Star, the banks, post offices and savings bureau offices that sell prize bonds also accept claims; ask at your branch. Keep a copy of everything you hand in.</li>
 <li><b>Get paid.</b> The prize, minus tax, is paid into your bank account. You don't get the winning bond back, but its ৳100 face value is paid along with the prize. News reports say payment usually takes up to about two months.</li>
 </ol>
 <h2>Tax: 20% at source</h2>
@@ -180,7 +180,7 @@ def claim_body(ext, c):
 {rows_en}</tbody></table></div>
 <p class="src">Plus the ৳100 face value of the winning bond.</p>
 <h2>Damaged or torn bond?</h2>
-<p>Bangladesh Bank has a separate <a href="{DAMAGED_FORM}" target="_blank" rel="noopener">form for damaged or defective prize bonds</a>. You state how the bond was damaged, and the bank pays after examining it.</p>
+<p>Bangladesh Bank has a separate <a href="{DAMAGED_FORM}" target="_blank" rel="noopener">form for damaged or defective prize bonds</a>. You state how the bond was damaged, and the bank decides on payment after examining it.</p>
 <p class="src">Sources: Ministry of Finance prize bond information (<a href="{IRD_INFO}" target="_blank" rel="noopener">prizebond.ird.gov.bd</a>), Bangladesh Bank's claim form, and official draw announcements. Rules can change, so check the form before you submit.</p>
 </div>
 <div class="l-bn" lang="bn">
@@ -192,14 +192,14 @@ def claim_body(ext, c):
 <li>পুরস্কারপ্রাপ্ত মূল বন্ড, পেছনে আপনার একটি স্বাক্ষরসহ</li>
 <li>জাতীয় পরিচয়পত্রের কপি</li>
 <li>আপনার ব্যাংক হিসাবের একটি চেকের পাতার কপি (MICR চেক)। পুরস্কারের টাকা এই হিসাবে জমা হবে।</li>
-<li>এক কপি সাম্প্রতিক ছবি</li>
+<li>এক কপি পাসপোর্ট সাইজের ছবি</li>
 </ol>
 <h2>ধাপে ধাপে</h2>
 <ol>
 <li><b>ফরম পূরণ করুন।</b> নাম, পিতার নাম, বর্তমান ও স্থায়ী ঠিকানা, জাতীয় পরিচয়পত্র নম্বর, টিআইএন, মোবাইল নম্বর ও ব্যাংক হিসাবের তথ্য (হিসাবের নাম, নম্বর ও রাউটিং নম্বর), এবং বন্ডের সিরিজ, নম্বর, ড্রয়ের নম্বর, তারিখ ও পুরস্কারের পরিমাণ লাগবে।</li>
 <li><b>পুরস্কারপ্রাপ্ত বন্ডের পেছনে একবার স্বাক্ষর করুন।</b> ফরমে শুধু একটি স্বাক্ষরের কথা বলা আছে।</li>
-<li><b>আপনার ব্যাংক থেকে ফরম সত্যায়ন করান।</b> ফরমে একটি অংশ আছে যেখানে আপনার ব্যাংকের কর্মকর্তা স্বাক্ষর ও সিল দেন। ফরম নিয়ে আপনার শাখায় যান।</li>
-<li><b>বাংলাদেশ ব্যাংকের অফিসে জমা দিন</b>, বন্ড ও কপিগুলোসহ। ফরমে বাংলাদেশ ব্যাংকের অফিসগুলোর নাম আছে, যেমন ঢাকার মতিঝিল ও সদরঘাট, চট্টগ্রাম, রাজশাহী, খুলনা, বরিশাল, সিলেট ও রংপুর। যা জমা দেবেন সবকিছুর একটি কপি নিজের কাছে রাখুন।</li>
+<li><b>ফরম সত্যায়ন করান।</b> বর্তমান ফরমে একটি অংশ আছে যেখানে আপনার ব্যাংকের কর্মকর্তা স্বাক্ষর ও সিল দেন, তাই ফরম নিয়ে আপনার শাখায় যান। কোনো কোনো অফিস গেজেটেড কর্মকর্তার সত্যায়নও চায়, তাই জমা দেওয়ার সময় জেনে নিন।</li>
+<li><b>জমা দিন</b>, বন্ড ও কপিগুলোসহ, ময়মনসিংহ ছাড়া বাংলাদেশ ব্যাংকের যেকোনো অফিসে, যেমন ঢাকার মতিঝিল বা সদরঘাট, চট্টগ্রাম, রাজশাহী, খুলনা, বরিশাল, সিলেট বা রংপুর। দ্য ডেইলি স্টারের তথ্য অনুযায়ী, যেসব ব্যাংক, ডাকঘর ও সঞ্চয় ব্যুরো প্রাইজবন্ড বিক্রি করে সেখানেও দাবি জমা নেওয়া হয়; আপনার শাখায় জেনে নিন। যা জমা দেবেন সবকিছুর একটি কপি নিজের কাছে রাখুন।</li>
 <li><b>টাকা পাবেন।</b> কর কেটে পুরস্কারের টাকা আপনার ব্যাংক হিসাবে জমা হয়। পুরস্কারপ্রাপ্ত বন্ড ফেরত দেওয়া হয় না, তবে বন্ডের ১০০ টাকা অভিহিত মূল্য পুরস্কারের সাথে দেওয়া হয়। সংবাদমাধ্যমের তথ্য অনুযায়ী টাকা পেতে সাধারণত সর্বোচ্চ দুই মাস লাগে।</li>
 </ol>
 <h2>কর: উৎসে ২০%</h2>
@@ -208,7 +208,7 @@ def claim_body(ext, c):
 {rows_bn}</tbody></table></div>
 <p class="src">সাথে পুরস্কারপ্রাপ্ত বন্ডের ১০০ টাকা অভিহিত মূল্য।</p>
 <h2>বন্ড ছেঁড়া বা নষ্ট?</h2>
-<p>বাংলাদেশ ব্যাংকের একটি আলাদা <a href="{DAMAGED_FORM}" target="_blank" rel="noopener">বিকৃত বা ত্রুটিযুক্ত প্রাইজবন্ডের আবেদন ফরম</a> আছে। বন্ড কীভাবে নষ্ট হয়েছে তা লিখতে হয়, যাচাইয়ের পর টাকা দেওয়া হয়।</p>
+<p>বাংলাদেশ ব্যাংকের একটি আলাদা <a href="{DAMAGED_FORM}" target="_blank" rel="noopener">বিকৃত বা ত্রুটিযুক্ত প্রাইজবন্ডের আবেদন ফরম</a> আছে। বন্ড কীভাবে নষ্ট হয়েছে তা লিখতে হয়, যাচাইয়ের পর ব্যাংক টাকা দেওয়ার বিষয়ে সিদ্ধান্ত নেয়।</p>
 <p class="src">সূত্র: অর্থ মন্ত্রণালয়ের প্রাইজবন্ড তথ্য (<a href="{IRD_INFO}" target="_blank" rel="noopener">prizebond.ird.gov.bd</a>), বাংলাদেশ ব্যাংকের দাবি ফরম এবং ড্রয়ের সরকারি বিজ্ঞপ্তি। নিয়ম বদলাতে পারে, তাই জমা দেওয়ার আগে ফরমটি দেখে নিন।</p>
 </div>"""
 
@@ -234,14 +234,14 @@ def buy_body(ext, c):
 <h2>Where to buy</h2>
 <p>Prize bonds are sold, and cashed back, at:</p>
 <ul>
-<li>Bangladesh Bank offices</li>
-<li>Scheduled (commercial) banks</li>
+<li>Bangladesh Bank offices (all except Mymensingh)</li>
+<li>Scheduled banks, except Shariah-based banks. Not every branch keeps them, so call first.</li>
 <li>Post offices</li>
 <li>National Savings Bureau offices</li>
 </ul>
 <p>Only the <b>৳100 bond</b> is sold today. It has been the only denomination since 1995. You pay its face value, ৳100 per bond.</p>
 <h2>When a new bond enters the draws</h2>
-<p>A bond takes part in a draw only if it was sold <b>at least 2 months (60 days) before</b> the draw date. The sale date is written on the bond. After that it is included in every draw, four times a year: <a href="prize-bond-draw-schedule{ext}">see the draw schedule</a>.</p>
+<p>A bond takes part in a draw only if it was sold <b>at least 2 months before</b> the draw date. The sale date is written on the bond. After that it is included in every draw, four times a year: <a href="prize-bond-draw-schedule{ext}">see the draw schedule</a>.</p>
 <h2>Cashing bonds back</h2>
 <p>You can cash prize bonds at the same places you buy them. News reports describe this as possible at any time, for the face value of ৳100. A bond that wins a prize is handed in when you claim, and its face value is paid with the prize.</p>
 <h2>Good to know</h2>
@@ -254,18 +254,18 @@ def buy_body(ext, c):
 <p class="src">Source: Ministry of Finance prize bond information (<a href="{IRD_INFO}" target="_blank" rel="noopener">prizebond.ird.gov.bd</a>) and official draw announcements.</p>
 </div>
 <div class="l-bn" lang="bn">
-<p>প্রাইজবন্ড বাংলাদেশ সরকারের ১০০ টাকার একটি সঞ্চয়পত্র। এতে কোনো মুনাফা নেই। বদলে প্রতিটি বন্ড প্রতি তিন মাস অন্তর ড্রয়ে অংশ নেয়, আর যেকোনো সময় ভাঙিয়ে টাকা ফেরত নেওয়া যায়।</p>
+<p>প্রাইজবন্ড বাংলাদেশ সরকারের ১০০ টাকার একটি সঞ্চয় মাধ্যম। এতে কোনো মুনাফা নেই। বদলে প্রতিটি বন্ড প্রতি তিন মাস অন্তর ড্রয়ে অংশ নেয়, আর যেকোনো সময় ভাঙিয়ে টাকা ফেরত নেওয়া যায়।</p>
 <h2>কোথায় কিনবেন</h2>
 <p>প্রাইজবন্ড কেনা ও ভাঙানো যায়:</p>
 <ul>
-<li>বাংলাদেশ ব্যাংকের অফিসে</li>
-<li>তফসিলি ব্যাংকে</li>
+<li>বাংলাদেশ ব্যাংকের অফিসে (ময়মনসিংহ ছাড়া সব)</li>
+<li>তফসিলি ব্যাংকে, শরীয়াহভিত্তিক ব্যাংক ছাড়া। সব শাখায় থাকে না, তাই আগে ফোন করে নিন।</li>
 <li>ডাকঘরে</li>
 <li>জাতীয় সঞ্চয় ব্যুরোতে</li>
 </ul>
 <p>এখন শুধু <b>১০০ টাকার বন্ড</b> বিক্রি হয়। ১৯৯৫ সাল থেকে এটিই একমাত্র মূল্যমান। প্রতিটি বন্ডের দাম তার অভিহিত মূল্য, ১০০ টাকা।</p>
 <h2>নতুন বন্ড কবে থেকে ড্রয়ে অংশ নেয়</h2>
-<p>ড্রয়ের তারিখের <b>অন্তত ২ মাস (৬০ দিন) আগে</b> বিক্রি হওয়া বন্ডই শুধু ড্রয়ে অংশ নেয়। বিক্রির তারিখ বন্ডে লেখা থাকে। এরপর বছরে চারবার প্রতিটি ড্রয়ে বন্ডটি অংশ নেয়: <a href="prize-bond-draw-schedule{ext}">ড্রয়ের সময়সূচি দেখুন</a>।</p>
+<p>ড্রয়ের তারিখের <b>অন্তত ২ মাস আগে</b> বিক্রি হওয়া বন্ডই শুধু ড্রয়ে অংশ নেয়। বিক্রির তারিখ বন্ডে লেখা থাকে। এরপর বছরে চারবার প্রতিটি ড্রয়ে বন্ডটি অংশ নেয়: <a href="prize-bond-draw-schedule{ext}">ড্রয়ের সময়সূচি দেখুন</a>।</p>
 <h2>বন্ড ভাঙানো</h2>
 <p>যেখানে কেনা যায়, সেখানেই প্রাইজবন্ড ভাঙানো যায়। সংবাদমাধ্যমের তথ্য অনুযায়ী যেকোনো সময় ১০০ টাকা অভিহিত মূল্যে ভাঙানো যায়। পুরস্কারপ্রাপ্ত বন্ড দাবি করার সময় জমা দিতে হয়, আর এর অভিহিত মূল্য পুরস্কারের সাথে দেওয়া হয়।</p>
 <h2>জেনে রাখুন</h2>
@@ -334,7 +334,7 @@ def calc_body(ext, c):
     form = f"""<form class="calc" id="calc" novalidate>
   <div class="field"><label for="cScheme" data-ien="Certificate" data-ibn="সঞ্চয়পত্র">Certificate</label><select id="cScheme">{opts}</select></div>
   <div class="field"><label for="cAmount" data-ien="Amount you invest (৳)" data-ibn="বিনিয়োগের পরিমাণ (৳)">Amount you invest (৳)</label><input id="cAmount" inputmode="numeric" value="100000" autocomplete="off"></div>
-  <div class="field"><label for="cTotal" data-ien="All your savings certificates together, including this (৳)" data-ibn="এটিসহ আপনার সব সঞ্চয়পত্র মিলিয়ে (৳)">All your savings certificates together, including this (৳)</label><input id="cTotal" inputmode="numeric" placeholder="" autocomplete="off"><small data-ien="Above ৳7.5 lakh in total, slightly lower rates apply. Leave empty if this is your only one." data-ibn="মোট সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম। এটিই একমাত্র হলে ফাঁকা রাখুন।">Above ৳7.5 lakh in total, slightly lower rates apply. Leave empty if this is your only one.</small></div>
+  <div class="field"><label for="cTotal" data-ien="Your total in savings certificates, including this (optional, ৳)" data-ibn="এটিসহ সঞ্চয়পত্রে আপনার মোট বিনিয়োগ (ঐচ্ছিক, ৳)">Your total in savings certificates, including this (optional, ৳)</label><input id="cTotal" inputmode="numeric" placeholder="" autocomplete="off"><small data-ien="Above ৳7.5 lakh, slightly lower rates apply. Leave empty if this is your only one." data-ibn="সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম। এটিই একমাত্র হলে ফাঁকা রাখুন।">Above ৳7.5 lakh, slightly lower rates apply. Leave empty if this is your only one.</small></div>
   <div class="field"><label for="cTax" data-ien="Tax deducted from profit" data-ibn="মুনাফা থেকে কর কর্তন">Tax deducted from profit</label><select id="cTax">
     <option value="10" data-ien="10% (current rule)" data-ibn="১০% (বর্তমান নিয়ম)">10% (current rule)</option>
     <option value="5" data-ien="5%" data-ibn="৫%">5%</option>
@@ -347,10 +347,10 @@ def calc_body(ext, c):
 <div class="l-en" lang="en">
 <h2>About these numbers</h2>
 <ul>
-<li><b>Rates in force since 1 July 2025.</b> The government kept them unchanged for January to June 2026 and again for 1 July to 31 December 2026. The next review is due in January 2027. Last checked {RATES_CHECKED}.</li>
+<li><b>Rates in force since 1 July 2025.</b> The government kept them unchanged for January to June 2026 and again for 1 July to 31 December 2026. Rates are normally reviewed every six months, so the next change could come in January 2027. Last checked {RATES_CHECKED}.</li>
 <li><b>Your rate is fixed when you buy</b> and stays the same until maturity, even if rates change later.</li>
-<li><b>The ৳7.5 lakh line counts all your savings certificates together</b>, not just the new one.</li>
-<li><b>Tax:</b> from July 2026, 10% is deducted from the profit as an advance tax. It is no longer final: you can adjust it against your income tax, and you must file a return to get any excess back. Earlier, a lower 5% rate applied when your total holding was up to ৳5 lakh. News reports don't make clear whether that still applies, so ask your bank or post office.</li>
+<li><b>Above ৳7.5 lakh, slightly lower rates apply.</b> How your existing certificates are counted toward that line isn't clearly published, so ask your bank or post office. This calculator applies the lower rate to the whole amount when your total is above ৳7.5 lakh.</li>
+<li><b>Tax:</b> from July 2026, 10% is deducted from the profit as an advance tax. It is no longer final: you can adjust it against your income tax, and you must file a return to get any excess back. Earlier, a lower 5% rate applied to smaller holdings, and Pensioner certificates up to ৳5 lakh were tax-free; news reports don't make clear whether these still apply. Without a TIN, a higher rate may be deducted. Ask your bank or post office which rate applies to you.</li>
 <li><b>Cashing early</b> pays a lower rate for the years you held it (table below).</li>
 <li>This calculator works out simple profit on the amount you invest. Your bank or post office's figure is final.</li>
 </ul>
@@ -362,10 +362,10 @@ def calc_body(ext, c):
 <div class="l-bn" lang="bn">
 <h2>এই হিসাব সম্পর্কে</h2>
 <ul>
-<li><b>১ জুলাই ২০২৫ থেকে কার্যকর হার।</b> সরকার জানুয়ারি–জুন ২০২৬ এবং আবার ১ জুলাই–৩১ ডিসেম্বর ২০২৬ পর্যন্ত হার অপরিবর্তিত রেখেছে। পরবর্তী পর্যালোচনা জানুয়ারি ২০২৭-এ। সর্বশেষ যাচাই: {b("21")} অক্টোবর {b("2026")}।</li>
+<li><b>১ জুলাই ২০২৫ থেকে কার্যকর হার।</b> সরকার জানুয়ারি–জুন ২০২৬ এবং আবার ১ জুলাই–৩১ ডিসেম্বর ২০২৬ পর্যন্ত হার অপরিবর্তিত রেখেছে। সাধারণত ছয় মাস পরপর হার পর্যালোচনা হয়, তাই জানুয়ারি ২০২৭-এ হার বদলাতে পারে। সর্বশেষ যাচাই: {b("21")} অক্টোবর {b("2026")}।</li>
 <li><b>কেনার সময়ের হারই মেয়াদ পর্যন্ত বহাল থাকে</b>, পরে হার বদলালেও।</li>
-<li><b>সাড়ে ৭ লাখ টাকার সীমা আপনার সব সঞ্চয়পত্র মিলিয়ে হিসাব হয়</b>, শুধু নতুনটি নয়।</li>
-<li><b>কর:</b> জুলাই ২০২৬ থেকে মুনাফা থেকে ১০% অগ্রিম কর কাটা হয়। এটি আর চূড়ান্ত কর দায় নয়: আয়করের সাথে সমন্বয় করা যায়, বাড়তি কর ফেরত পেতে রিটার্ন দাখিল করতে হয়। আগে মোট বিনিয়োগ ৫ লাখ টাকা পর্যন্ত হলে ৫% কর কাটা হতো। এটি এখনো প্রযোজ্য কি না সংবাদমাধ্যমে স্পষ্ট নয়, তাই আপনার ব্যাংক বা ডাকঘরে জেনে নিন।</li>
+<li><b>সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম।</b> আগের সঞ্চয়পত্রগুলো এই সীমায় কীভাবে গোনা হয় তা স্পষ্টভাবে প্রকাশিত নয়, তাই আপনার ব্যাংক বা ডাকঘরে জেনে নিন। মোট বিনিয়োগ সাড়ে ৭ লাখের বেশি হলে এই ক্যালকুলেটর পুরো টাকায় কম হার ধরে।</li>
+<li><b>কর:</b> জুলাই ২০২৬ থেকে মুনাফা থেকে ১০% অগ্রিম কর কাটা হয়। এটি আর চূড়ান্ত কর দায় নয়: আয়করের সাথে সমন্বয় করা যায়, বাড়তি কর ফেরত পেতে রিটার্ন দাখিল করতে হয়। আগে কম বিনিয়োগে ৫% কর কাটা হতো, আর ৫ লাখ টাকা পর্যন্ত পেনশনার সঞ্চয়পত্র করমুক্ত ছিল; এগুলো এখনো প্রযোজ্য কি না সংবাদমাধ্যমে স্পষ্ট নয়। টিআইএন না থাকলে বেশি হারে কর কাটা হতে পারে। আপনার ক্ষেত্রে কোন হার প্রযোজ্য তা ব্যাংক বা ডাকঘরে জেনে নিন।</li>
 <li><b>মেয়াদের আগে ভাঙালে</b> যত বছর রেখেছেন সেই বছরের কম হারে মুনাফা পাবেন (নিচের সারণি)।</li>
 <li>এই ক্যালকুলেটর বিনিয়োগের ওপর সরল মুনাফা হিসাব করে। চূড়ান্ত হিসাব আপনার ব্যাংক বা ডাকঘরের।</li>
 </ul>

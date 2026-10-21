@@ -297,7 +297,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 <form class="calc" id="calc" novalidate>
   <div class="field"><label for="cScheme" data-ien="Certificate" data-ibn="সঞ্চয়পত্র">Certificate</label><select id="cScheme"><option value="bsp" data-ien="5-year Bangladesh Sanchayapatra" data-ibn="৫ বছর মেয়াদি বাংলাদেশ সঞ্চয়পত্র">5-year Bangladesh Sanchayapatra</option><option value="q3" data-ien="3-year Profit-based (quarterly profit)" data-ibn="৩ বছর মেয়াদি তিন মাস অন্তর মুনাফাভিত্তিক">3-year Profit-based (quarterly profit)</option><option value="family" data-ien="Paribar Sanchayapatra (family, monthly profit)" data-ibn="পরিবার সঞ্চয়পত্র (মাসিক মুনাফা)">Paribar Sanchayapatra (family, monthly profit)</option><option value="pension" data-ien="Pensioner Sanchayapatra (quarterly profit)" data-ibn="পেনশনার সঞ্চয়পত্র (তিন মাস অন্তর মুনাফা)">Pensioner Sanchayapatra (quarterly profit)</option></select></div>
   <div class="field"><label for="cAmount" data-ien="Amount you invest (৳)" data-ibn="বিনিয়োগের পরিমাণ (৳)">Amount you invest (৳)</label><input id="cAmount" inputmode="numeric" value="100000" autocomplete="off"></div>
-  <div class="field"><label for="cTotal" data-ien="All your savings certificates together, including this (৳)" data-ibn="এটিসহ আপনার সব সঞ্চয়পত্র মিলিয়ে (৳)">All your savings certificates together, including this (৳)</label><input id="cTotal" inputmode="numeric" placeholder="" autocomplete="off"><small data-ien="Above ৳7.5 lakh in total, slightly lower rates apply. Leave empty if this is your only one." data-ibn="মোট সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম। এটিই একমাত্র হলে ফাঁকা রাখুন।">Above ৳7.5 lakh in total, slightly lower rates apply. Leave empty if this is your only one.</small></div>
+  <div class="field"><label for="cTotal" data-ien="Your total in savings certificates, including this (optional, ৳)" data-ibn="এটিসহ সঞ্চয়পত্রে আপনার মোট বিনিয়োগ (ঐচ্ছিক, ৳)">Your total in savings certificates, including this (optional, ৳)</label><input id="cTotal" inputmode="numeric" placeholder="" autocomplete="off"><small data-ien="Above ৳7.5 lakh, slightly lower rates apply. Leave empty if this is your only one." data-ibn="সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম। এটিই একমাত্র হলে ফাঁকা রাখুন।">Above ৳7.5 lakh, slightly lower rates apply. Leave empty if this is your only one.</small></div>
   <div class="field"><label for="cTax" data-ien="Tax deducted from profit" data-ibn="মুনাফা থেকে কর কর্তন">Tax deducted from profit</label><select id="cTax">
     <option value="10" data-ien="10% (current rule)" data-ibn="১০% (বর্তমান নিয়ম)">10% (current rule)</option>
     <option value="5" data-ien="5%" data-ibn="৫%">5%</option>
@@ -308,10 +308,10 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 <div class="l-en" lang="en">
 <h2>About these numbers</h2>
 <ul>
-<li><b>Rates in force since 1 July 2025.</b> The government kept them unchanged for January to June 2026 and again for 1 July to 31 December 2026. The next review is due in January 2027. Last checked 21 Oct 2026.</li>
+<li><b>Rates in force since 1 July 2025.</b> The government kept them unchanged for January to June 2026 and again for 1 July to 31 December 2026. Rates are normally reviewed every six months, so the next change could come in January 2027. Last checked 21 Oct 2026.</li>
 <li><b>Your rate is fixed when you buy</b> and stays the same until maturity, even if rates change later.</li>
-<li><b>The ৳7.5 lakh line counts all your savings certificates together</b>, not just the new one.</li>
-<li><b>Tax:</b> from July 2026, 10% is deducted from the profit as an advance tax. It is no longer final: you can adjust it against your income tax, and you must file a return to get any excess back. Earlier, a lower 5% rate applied when your total holding was up to ৳5 lakh. News reports don't make clear whether that still applies, so ask your bank or post office.</li>
+<li><b>Above ৳7.5 lakh, slightly lower rates apply.</b> How your existing certificates are counted toward that line isn't clearly published, so ask your bank or post office. This calculator applies the lower rate to the whole amount when your total is above ৳7.5 lakh.</li>
+<li><b>Tax:</b> from July 2026, 10% is deducted from the profit as an advance tax. It is no longer final: you can adjust it against your income tax, and you must file a return to get any excess back. Earlier, a lower 5% rate applied to smaller holdings, and Pensioner certificates up to ৳5 lakh were tax-free; news reports don't make clear whether these still apply. Without a TIN, a higher rate may be deducted. Ask your bank or post office which rate applies to you.</li>
 <li><b>Cashing early</b> pays a lower rate for the years you held it (table below).</li>
 <li>This calculator works out simple profit on the amount you invest. Your bank or post office's figure is final.</li>
 </ul>
@@ -323,10 +323,10 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 <div class="l-bn" lang="bn">
 <h2>এই হিসাব সম্পর্কে</h2>
 <ul>
-<li><b>১ জুলাই ২০২৫ থেকে কার্যকর হার।</b> সরকার জানুয়ারি–জুন ২০২৬ এবং আবার ১ জুলাই–৩১ ডিসেম্বর ২০২৬ পর্যন্ত হার অপরিবর্তিত রেখেছে। পরবর্তী পর্যালোচনা জানুয়ারি ২০২৭-এ। সর্বশেষ যাচাই: ২১ অক্টোবর ২০২৬।</li>
+<li><b>১ জুলাই ২০২৫ থেকে কার্যকর হার।</b> সরকার জানুয়ারি–জুন ২০২৬ এবং আবার ১ জুলাই–৩১ ডিসেম্বর ২০২৬ পর্যন্ত হার অপরিবর্তিত রেখেছে। সাধারণত ছয় মাস পরপর হার পর্যালোচনা হয়, তাই জানুয়ারি ২০২৭-এ হার বদলাতে পারে। সর্বশেষ যাচাই: ২১ অক্টোবর ২০২৬।</li>
 <li><b>কেনার সময়ের হারই মেয়াদ পর্যন্ত বহাল থাকে</b>, পরে হার বদলালেও।</li>
-<li><b>সাড়ে ৭ লাখ টাকার সীমা আপনার সব সঞ্চয়পত্র মিলিয়ে হিসাব হয়</b>, শুধু নতুনটি নয়।</li>
-<li><b>কর:</b> জুলাই ২০২৬ থেকে মুনাফা থেকে ১০% অগ্রিম কর কাটা হয়। এটি আর চূড়ান্ত কর দায় নয়: আয়করের সাথে সমন্বয় করা যায়, বাড়তি কর ফেরত পেতে রিটার্ন দাখিল করতে হয়। আগে মোট বিনিয়োগ ৫ লাখ টাকা পর্যন্ত হলে ৫% কর কাটা হতো। এটি এখনো প্রযোজ্য কি না সংবাদমাধ্যমে স্পষ্ট নয়, তাই আপনার ব্যাংক বা ডাকঘরে জেনে নিন।</li>
+<li><b>সাড়ে ৭ লাখ টাকার বেশি হলে মুনাফার হার একটু কম।</b> আগের সঞ্চয়পত্রগুলো এই সীমায় কীভাবে গোনা হয় তা স্পষ্টভাবে প্রকাশিত নয়, তাই আপনার ব্যাংক বা ডাকঘরে জেনে নিন। মোট বিনিয়োগ সাড়ে ৭ লাখের বেশি হলে এই ক্যালকুলেটর পুরো টাকায় কম হার ধরে।</li>
+<li><b>কর:</b> জুলাই ২০২৬ থেকে মুনাফা থেকে ১০% অগ্রিম কর কাটা হয়। এটি আর চূড়ান্ত কর দায় নয়: আয়করের সাথে সমন্বয় করা যায়, বাড়তি কর ফেরত পেতে রিটার্ন দাখিল করতে হয়। আগে কম বিনিয়োগে ৫% কর কাটা হতো, আর ৫ লাখ টাকা পর্যন্ত পেনশনার সঞ্চয়পত্র করমুক্ত ছিল; এগুলো এখনো প্রযোজ্য কি না সংবাদমাধ্যমে স্পষ্ট নয়। টিআইএন না থাকলে বেশি হারে কর কাটা হতে পারে। আপনার ক্ষেত্রে কোন হার প্রযোজ্য তা ব্যাংক বা ডাকঘরে জেনে নিন।</li>
 <li><b>মেয়াদের আগে ভাঙালে</b> যত বছর রেখেছেন সেই বছরের কম হারে মুনাফা পাবেন (নিচের সারণি)।</li>
 <li>এই ক্যালকুলেটর বিনিয়োগের ওপর সরল মুনাফা হিসাব করে। চূড়ান্ত হিসাব আপনার ব্যাংক বা ডাকঘরের।</li>
 </ul>
@@ -355,8 +355,8 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
     <ul id="drawLinks">
       <li><a href="124th-prize-bond-draw-result" data-no="124"><b data-ien="124th draw" data-ibn="১২৪তম ড্র">124th draw</b><span data-ien="2 Aug 2026" data-ibn="২ আগস্ট ২০২৬">2 Aug 2026</span></a></li>
       <li><a href="123rd-prize-bond-draw-result" data-no="123"><b data-ien="123rd draw" data-ibn="১২৩তম ড্র">123rd draw</b><span data-ien="30 Apr 2026" data-ibn="৩০ এপ্রিল ২০২৬">30 Apr 2026</span></a></li>
-      <li><a href="122nd-prize-bond-draw-result" data-no="122"><b data-ien="122nd draw" data-ibn="১২২তম ড্র">122nd draw</b><span data-ien="31 Jan 2026" data-ibn="৩১ জানুয়ারি ২০২৬">31 Jan 2026</span></a></li>
-      <li><a href="121st-prize-bond-draw-result" data-no="121"><b data-ien="121st draw" data-ibn="১২১তম ড্র">121st draw</b><span data-ien="31 Oct 2025" data-ibn="৩১ অক্টোবর ২০২৫">31 Oct 2025</span></a></li>
+      <li><a href="122nd-prize-bond-draw-result" data-no="122"><b data-ien="122nd draw" data-ibn="১২২তম ড্র">122nd draw</b><span data-ien="1 Feb 2026" data-ibn="১ ফেব্রুয়ারি ২০২৬">1 Feb 2026</span></a></li>
+      <li><a href="121st-prize-bond-draw-result" data-no="121"><b data-ien="121st draw" data-ibn="১২১তম ড্র">121st draw</b><span data-ien="2 Nov 2025" data-ibn="২ নভেম্বর ২০২৫">2 Nov 2025</span></a></li>
       <li><a href="120th-prize-bond-draw-result" data-no="120"><b data-ien="120th draw" data-ibn="১২০তম ড্র">120th draw</b><span data-ien="31 Jul 2025" data-ibn="৩১ জুলাই ২০২৫">31 Jul 2025</span></a></li>
       <li><a href="119th-prize-bond-draw-result" data-no="119"><b data-ien="119th draw" data-ibn="১১৯তম ড্র">119th draw</b><span data-ien="30 Apr 2025" data-ibn="৩০ এপ্রিল ২০২৫">30 Apr 2025</span></a></li>
       <li><a href="118th-prize-bond-draw-result" data-no="118"><b data-ien="118th draw" data-ibn="১১৮তম ড্র">118th draw</b><span data-ien="2 Feb 2025" data-ibn="২ ফেব্রুয়ারি ২০২৫">2 Feb 2025</span></a></li>
