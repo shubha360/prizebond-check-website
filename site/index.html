@@ -18,7 +18,7 @@
 <meta property="og:url" content="https://checkprizebond.com/">
 <meta property="og:image" content="https://checkprizebond.com/icons/icon-512.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"PrizeBond Check","alternateName":"প্রাইজবন্ড চেক","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":["en","bn"],"description":"Check all your Bangladesh 100 Taka prize bonds free against the last 8 Bangladesh Bank draws (117th to 124th). Bulk check, Excel upload, camera scan. প্রাইজবন্ড ড্র ফলাফল ২০২৬ বিনামূল্যে মিলিয়ে দেখুন।","offers":{"@type":"Offer","price":"0","priceCurrency":"BDT"},"url":"https://checkprizebond.com/"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is the prize bond draw held?","acceptedAnswer":{"@type":"Answer","text":"Four times a year: on 31 January, 30 April, 31 July and 31 October. If that day is a holiday, the draw moves to the next working day."}},{"@type":"Question","name":"Do I need the series letters to check my bond?","acceptedAnswer":{"@type":"Answer","text":"No. Bangladesh Bank uses a single common draw, so the same 46 winning numbers apply to every series (কক, কখ and so on). Only the 7-digit number matters."}},{"@type":"Question","name":"How much is each prize?","acceptedAnswer":{"@type":"Answer","text":"Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. Tax is deducted at source."}},{"@type":"Question","name":"How long can I claim a prize?","acceptedAnswer":{"@type":"Answer","text":"Within 2 years of the draw date. That's why this site checks the last 8 draws."}},{"@type":"Question","name":"Which bonds take part in a draw?","acceptedAnswer":{"@type":"Answer","text":"Every bond bought at least 60 days before the draw date. A bond keeps taking part in every draw after that."}},{"@type":"Question","name":"Is it safe to enter my bond numbers here?","acceptedAnswer":{"@type":"Answer","text":"Yes. Your numbers are checked inside your own browser and saved only on your device. Nothing is sent to a server."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is the prize bond draw held?","acceptedAnswer":{"@type":"Answer","text":"Four times a year: on 31 January, 30 April, 31 July and 31 October. If that day is a holiday, the draw moves to the next working day."}},{"@type":"Question","name":"Do I need the series letters to check my bond?","acceptedAnswer":{"@type":"Answer","text":"No. Bangladesh Bank uses a single common draw, so the same 46 winning numbers apply to every series (কক, কখ and so on). Only the 7-digit number matters."}},{"@type":"Question","name":"How much is each prize?","acceptedAnswer":{"@type":"Answer","text":"Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. 20% tax is deducted at source."}},{"@type":"Question","name":"How long can I claim a prize?","acceptedAnswer":{"@type":"Answer","text":"Within 2 years of the draw date. That's why this site checks the last 8 draws."}},{"@type":"Question","name":"Which bonds take part in a draw?","acceptedAnswer":{"@type":"Answer","text":"Every bond bought at least 60 days before the draw date. A bond keeps taking part in every draw after that."}},{"@type":"Question","name":"Is it safe to enter my bond numbers here?","acceptedAnswer":{"@type":"Answer","text":"Yes. Your numbers are checked inside your own browser and saved only on your device. Nothing is sent to a server."}}]}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -239,6 +239,19 @@ html[lang="bn"] .l-en,html:not([lang="bn"]) .l-bn{display:none}
 .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--sheet);border:1px solid var(--green);border-radius:6px;padding:14px 16px}
 .cta p{flex:1 1 260px;margin:0}
 .cta a.btn{text-decoration:none;display:inline-block}
+/* calculator */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 16px;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px}
+.calc .field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.calc label{font-size:14px;font-weight:600}
+.calc small{font-size:12px;color:var(--muted)}
+.calc select,.calc input{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:9px 10px;width:100%}
+.calc input{font-family:var(--mono)}
+.calc-out{display:flex;flex-direction:column;gap:10px}
+.calc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.calc-cards .card{display:flex;flex-direction:column;gap:2px;background:var(--green-soft);border-radius:6px;padding:12px 14px}
+.calc-cards .card span{font-size:13px;color:var(--muted)}
+.calc-cards .card b{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--green)}
+.calc-cards .card small{font-size:12px;color:var(--muted)}
 
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .ios-tip{font-size:13px;color:var(--muted)}
@@ -359,9 +372,10 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
       <h3 data-i="claimH">Won something?</h3>
       <ol>
         <li data-i="c1">Keep the original bond safe. You must hand it in.</li>
-        <li data-i="c2">Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.</li>
-        <li data-i="c3">Claim within 2 years of the draw date. Tax is deducted from the prize at source.</li>
+        <li data-i="c2">Fill in the claim form, have your bank verify it, and submit it with the bond, an NID copy and a cheque leaf copy at a Bangladesh Bank office.</li>
+        <li data-i="c3">Claim within 2 years of the draw date. 20% tax is deducted from the prize at source.</li>
       </ol>
+      <p style="margin-top:8px"><a href="how-to-claim-prize-bond" data-i="claimGuide">Step-by-step claim guide</a></p>
     </div>
     <div>
       <h3 data-i="formH">Claim form</h3>
@@ -393,7 +407,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
     <dl>
       <div><dt data-ien="When is the prize bond draw held?" data-ibn="প্রাইজবন্ডের ড্র কবে হয়?">When is the prize bond draw held?</dt><dd data-ien="Four times a year: on 31 January, 30 April, 31 July and 31 October. If that day is a holiday, the draw moves to the next working day." data-ibn="বছরে চারবার: ৩১ জানুয়ারি, ৩০ এপ্রিল, ৩১ জুলাই ও ৩১ অক্টোবর। ওই দিন ছুটি থাকলে পরের কর্মদিবসে ড্র হয়।">Four times a year: on 31 January, 30 April, 31 July and 31 October. If that day is a holiday, the draw moves to the next working day.</dd></div>
       <div><dt data-ien="Do I need the series letters to check my bond?" data-ibn="বন্ড মেলাতে কি সিরিজ লাগবে?">Do I need the series letters to check my bond?</dt><dd data-ien="No. Bangladesh Bank uses a single common draw, so the same 46 winning numbers apply to every series (কক, কখ and so on). Only the 7-digit number matters." data-ibn="না। বাংলাদেশ ব্যাংক সিঙ্গেল কমন ড্র পদ্ধতিতে ড্র করে, তাই সব সিরিজে (কক, কখ ইত্যাদি) একই ৪৬টি বিজয়ী নম্বর। শুধু ৭ অঙ্কের নম্বর মেলালেই হবে।">No. Bangladesh Bank uses a single common draw, so the same 46 winning numbers apply to every series (কক, কখ and so on). Only the 7-digit number matters.</dd></div>
-      <div><dt data-ien="How much is each prize?" data-ibn="কোন পুরস্কার কত টাকার?">How much is each prize?</dt><dd data-ien="Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. Tax is deducted at source." data-ibn="প্রতি সিরিজে ৪৬টি পুরস্কার: ১ম ৬,০০,০০০ টাকা, ২য় ৩,২৫,০০০ টাকা, ১ লাখ টাকার ২টি ৩য় পুরস্কার, ৫০ হাজার টাকার ২টি ৪র্থ পুরস্কার এবং ১০ হাজার টাকার ৪০টি ৫ম পুরস্কার। উৎসে কর কাটা হয়।">Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. Tax is deducted at source.</dd></div>
+      <div><dt data-ien="How much is each prize?" data-ibn="কোন পুরস্কার কত টাকার?">How much is each prize?</dt><dd data-ien="Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. 20% tax is deducted at source." data-ibn="প্রতি সিরিজে ৪৬টি পুরস্কার: ১ম ৬,০০,০০০ টাকা, ২য় ৩,২৫,০০০ টাকা, ১ লাখ টাকার ২টি ৩য় পুরস্কার, ৫০ হাজার টাকার ২টি ৪র্থ পুরস্কার এবং ১০ হাজার টাকার ৪০টি ৫ম পুরস্কার। উৎসে ২০% কর কাটা হয়।">Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. 20% tax is deducted at source.</dd></div>
       <div><dt data-ien="How long can I claim a prize?" data-ibn="কত দিনের মধ্যে পুরস্কার দাবি করতে হয়?">How long can I claim a prize?</dt><dd data-ien="Within 2 years of the draw date. That&#x27;s why this site checks the last 8 draws." data-ibn="ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে। তাই এই সাইট সর্বশেষ ৮টি ড্রয়ের সাথে মিলিয়ে দেখে।">Within 2 years of the draw date. That&#x27;s why this site checks the last 8 draws.</dd></div>
       <div><dt data-ien="Which bonds take part in a draw?" data-ibn="কোন বন্ডগুলো ড্রয়ে অংশ নেয়?">Which bonds take part in a draw?</dt><dd data-ien="Every bond bought at least 60 days before the draw date. A bond keeps taking part in every draw after that." data-ibn="ড্রয়ের তারিখের অন্তত ৬০ দিন আগে কেনা সব বন্ড। এরপর থেকে প্রতিটি ড্রয়ে বন্ডটি অংশ নেয়।">Every bond bought at least 60 days before the draw date. A bond keeps taking part in every draw after that.</dd></div>
       <div><dt data-ien="Is it safe to enter my bond numbers here?" data-ibn="এখানে বন্ড নম্বর দেওয়া কি নিরাপদ?">Is it safe to enter my bond numbers here?</dt><dd data-ien="Yes. Your numbers are checked inside your own browser and saved only on your device. Nothing is sent to a server." data-ibn="হ্যাঁ। নম্বরগুলো আপনার ব্রাউজারেই মেলানো হয় এবং শুধু আপনার ডিভাইসে সংরক্ষিত থাকে। কোনো সার্ভারে পাঠানো হয় না।">Yes. Your numbers are checked inside your own browser and saved only on your device. Nothing is sent to a server.</dd></div>
@@ -403,7 +417,10 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
   <nav class="guides" aria-label="Guides">
     <h2 data-i="guidesH">Prize bond guides</h2>
     <ul>
+      <li><a href="how-to-claim-prize-bond"><b data-ien="How to claim a prize" data-ibn="পুরস্কার দাবির নিয়ম">How to claim a prize</b><span data-ien="Documents, steps, 20% tax" data-ibn="কাগজপত্র, ধাপ, ২০% কর">Documents, steps, 20% tax</span></a></li>
       <li><a href="prize-bond-draw-schedule"><b data-ien="Draw schedule" data-ibn="ড্রয়ের সময়সূচি">Draw schedule</b><span data-ien="Upcoming draw dates and prizes" data-ibn="আসন্ন ড্রয়ের তারিখ ও পুরস্কার">Upcoming draw dates and prizes</span></a></li>
+      <li><a href="how-to-buy-prize-bond"><b data-ien="How to buy prize bonds" data-ibn="প্রাইজবন্ড কেনার নিয়ম">How to buy prize bonds</b><span data-ien="Where to buy, cashing back" data-ibn="কোথায় কিনবেন, ভাঙাবেন">Where to buy, cashing back</span></a></li>
+      <li><a href="sanchayapatra-profit-calculator"><b data-ien="Savings certificate calculator" data-ibn="সঞ্চয়পত্র মুনাফা ক্যালকুলেটর">Savings certificate calculator</b><span data-ien="Profit at current rates" data-ibn="বর্তমান হারে মুনাফা">Profit at current rates</span></a></li>
     </ul>
   </nav>
 
@@ -469,8 +486,8 @@ const T = {
   keepNo:"Download cancelled.",keepFail:"Couldn't create the sheet. Check your internet connection and try again.",keepBusy:"Preparing your sheet…",
   check:"Check my bonds",clear:"Clear",saved:"Saved on this device only. Nothing is sent anywhere.",
   claimH:"Won something?",c1:"Keep the original bond safe. You must hand it in.",
-  c2:"Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.",
-  c3:"Claim within 2 years of the draw date. Tax is deducted from the prize at source.",
+  c2:"Fill in the claim form, have your bank verify it, and submit it with the bond, an NID copy and a cheque leaf copy at a Bangladesh Bank office.",
+  c3:"Claim within 2 years of the draw date. 20% tax is deducted from the prize at source.",claimGuide:"Step-by-step claim guide",
   formH:"Claim form",formPdf:"Bangladesh Bank claim form (PDF)",official:"Double-check on Bangladesh Bank's site",
   ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",guidesH:"Prize bond guides",
   foot1:"Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.",
@@ -516,8 +533,8 @@ const T = {
   keepNo:"ডাউনলোড বাতিল হয়েছে।",keepFail:"শিট তৈরি করা যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।",keepBusy:"শিট তৈরি হচ্ছে…",
   check:"বন্ড মিলিয়ে দেখুন",clear:"মুছুন",saved:"শুধু এই ডিভাইসে সংরক্ষিত। কোথাও পাঠানো হয় না।",
   claimH:"পুরস্কার পেয়েছেন?",c1:"আসল বন্ডটি যত্নে রাখুন। এটি জমা দিতে হবে।",
-  c2:"দাবি ফরম পূরণ করে বন্ড ও জাতীয় পরিচয়পত্রসহ বাংলাদেশ ব্যাংকের অফিস বা যেকোনো তফসিলি ব্যাংকের শাখায় জমা দিন।",
-  c3:"ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে দাবি করতে হবে। পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়।",
+  c2:"দাবি ফরম পূরণ করে আপনার ব্যাংক থেকে সত্যায়ন করান, তারপর বন্ড, জাতীয় পরিচয়পত্রের কপি ও চেকের পাতার কপিসহ বাংলাদেশ ব্যাংকের অফিসে জমা দিন।",
+  c3:"ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে দাবি করতে হবে। পুরস্কারের অর্থ থেকে উৎসে ২০% কর কাটা হয়।",claimGuide:"ধাপে ধাপে দাবি করার নিয়ম",
   formH:"দাবি ফরম",formPdf:"বাংলাদেশ ব্যাংকের দাবি ফরম (PDF)",official:"বাংলাদেশ ব্যাংকের সাইটে যাচাই করুন",
   ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",guidesH:"প্রাইজবন্ড গাইড",
   foot1:"ফলাফল বাংলাদেশ ব্যাংকের ঘোষণা ও জাতীয় দৈনিক থেকে সংকলিত। পুরস্কার দাবি করতে যাওয়ার আগে বাংলাদেশ ব্যাংকে নিশ্চিত হয়ে নিন।",

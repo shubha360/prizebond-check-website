@@ -238,6 +238,19 @@ html[lang="bn"] .l-en,html:not([lang="bn"]) .l-bn{display:none}
 .cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--sheet);border:1px solid var(--green);border-radius:6px;padding:14px 16px}
 .cta p{flex:1 1 260px;margin:0}
 .cta a.btn{text-decoration:none;display:inline-block}
+/* calculator */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 16px;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px}
+.calc .field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.calc label{font-size:14px;font-weight:600}
+.calc small{font-size:12px;color:var(--muted)}
+.calc select,.calc input{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:9px 10px;width:100%}
+.calc input{font-family:var(--mono)}
+.calc-out{display:flex;flex-direction:column;gap:10px}
+.calc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.calc-cards .card{display:flex;flex-direction:column;gap:2px;background:var(--green-soft);border-radius:6px;padding:12px 14px}
+.calc-cards .card span{font-size:13px;color:var(--muted)}
+.calc-cards .card b{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--green)}
+.calc-cards .card small{font-size:12px;color:var(--muted)}
 
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .ios-tip{font-size:13px;color:var(--muted)}
@@ -355,7 +368,10 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
   <nav class="guides" aria-label="Guides">
     <h2 data-i="guidesH">Prize bond guides</h2>
     <ul>
+      <li><a href="how-to-claim-prize-bond"><b data-ien="How to claim a prize" data-ibn="পুরস্কার দাবির নিয়ম">How to claim a prize</b><span data-ien="Documents, steps, 20% tax" data-ibn="কাগজপত্র, ধাপ, ২০% কর">Documents, steps, 20% tax</span></a></li>
       <li><a href="prize-bond-draw-schedule" aria-current="page"><b data-ien="Draw schedule" data-ibn="ড্রয়ের সময়সূচি">Draw schedule</b><span data-ien="Upcoming draw dates and prizes" data-ibn="আসন্ন ড্রয়ের তারিখ ও পুরস্কার">Upcoming draw dates and prizes</span></a></li>
+      <li><a href="how-to-buy-prize-bond"><b data-ien="How to buy prize bonds" data-ibn="প্রাইজবন্ড কেনার নিয়ম">How to buy prize bonds</b><span data-ien="Where to buy, cashing back" data-ibn="কোথায় কিনবেন, ভাঙাবেন">Where to buy, cashing back</span></a></li>
+      <li><a href="sanchayapatra-profit-calculator"><b data-ien="Savings certificate calculator" data-ibn="সঞ্চয়পত্র মুনাফা ক্যালকুলেটর">Savings certificate calculator</b><span data-ien="Profit at current rates" data-ibn="বর্তমান হারে মুনাফা">Profit at current rates</span></a></li>
     </ul>
   </nav>
 

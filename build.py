@@ -108,8 +108,8 @@ FAQ = [
   "No. Bangladesh Bank uses a single common draw, so the same 46 winning numbers apply to every series (কক, কখ and so on). Only the 7-digit number matters.",
   "না। বাংলাদেশ ব্যাংক সিঙ্গেল কমন ড্র পদ্ধতিতে ড্র করে, তাই সব সিরিজে (কক, কখ ইত্যাদি) একই ৪৬টি বিজয়ী নম্বর। শুধু ৭ অঙ্কের নম্বর মেলালেই হবে।"),
  ("How much is each prize?", "কোন পুরস্কার কত টাকার?",
-  "Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. Tax is deducted at source.",
-  "প্রতি সিরিজে ৪৬টি পুরস্কার: ১ম ৬,০০,০০০ টাকা, ২য় ৩,২৫,০০০ টাকা, ১ লাখ টাকার ২টি ৩য় পুরস্কার, ৫০ হাজার টাকার ২টি ৪র্থ পুরস্কার এবং ১০ হাজার টাকার ৪০টি ৫ম পুরস্কার। উৎসে কর কাটা হয়।"),
+  "Each draw has 46 prizes per series: 1st ৳6,00,000, 2nd ৳3,25,000, two 3rd prizes of ৳1,00,000, two 4th prizes of ৳50,000 and forty 5th prizes of ৳10,000. 20% tax is deducted at source.",
+  "প্রতি সিরিজে ৪৬টি পুরস্কার: ১ম ৬,০০,০০০ টাকা, ২য় ৩,২৫,০০০ টাকা, ১ লাখ টাকার ২টি ৩য় পুরস্কার, ৫০ হাজার টাকার ২টি ৪র্থ পুরস্কার এবং ১০ হাজার টাকার ৪০টি ৫ম পুরস্কার। উৎসে ২০% কর কাটা হয়।"),
  ("How long can I claim a prize?", "কত দিনের মধ্যে পুরস্কার দাবি করতে হয়?",
   "Within 2 years of the draw date. That's why this site checks the last 8 draws.",
   "ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে। তাই এই সাইট সর্বশেষ ৮টি ড্রয়ের সাথে মিলিয়ে দেখে।"),
@@ -151,6 +151,7 @@ def page(intro, order, page_draw, board_draw, faq, head_html, home, ext="", curr
     s = s.replace("<!--SECTION:links-->", links(page_draw, ext))
     s = s.replace("<!--SECTION:faq-->", faq)
     s = s.replace("/*__DRAWS__*/[]", DATA)
+    s = s.replace("__EXT__", ext)
     s = s.replace("/*__PAGE__*/{draw:null,ext:\"\"}", json.dumps({"draw": page_draw, "home": home, "ext": ext}))
     assert "<!--" not in s.replace("<!--HEAD-->", ""), "unfilled placeholder"
     return s
