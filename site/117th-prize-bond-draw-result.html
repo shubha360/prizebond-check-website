@@ -212,6 +212,33 @@ details.checked summary{cursor:pointer;color:var(--muted);font-size:14px;margin-
 .faq dt{font-weight:600}
 .faq dd{margin:2px 0 0;color:var(--muted);max-width:68ch}
 
+/* language blocks on guide pages */
+html[lang="bn"] .l-en,html:not([lang="bn"]) .l-bn{display:none}
+/* guide nav */
+.guides h2{font-size:22px;margin-bottom:10px}
+.guides ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.guides li a{display:flex;flex-direction:column;gap:2px;background:var(--green-soft);border:1px solid transparent;border-radius:4px;padding:10px 12px;text-decoration:none;color:var(--ink);height:100%}
+.guides li a:hover{border-color:var(--green)}
+.guides li a b{font-weight:600}
+.guides li a span{font-size:13px;color:var(--muted)}
+.guides li a[aria-current="page"]{border-color:var(--green)}
+/* guide article */
+.guide{display:flex;flex-direction:column;gap:14px;max-width:70ch}
+.guide h2{font-size:24px;margin-top:10px}
+.guide h3{font-size:19px;margin-top:4px}
+.guide p,.guide li{color:var(--ink)}
+.guide ol,.guide ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.guide .note{background:var(--gold-soft);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 4px 4px 0;font-size:15px}
+.guide .src{font-size:13px;color:var(--muted)}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;width:100%;font-size:15px;background:var(--sheet)}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:7px 10px;text-align:left;vertical-align:top}
+.tbl th{background:var(--green-soft);font-weight:600}
+.tbl td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--sheet);border:1px solid var(--green);border-radius:6px;padding:14px 16px}
+.cta p{flex:1 1 260px;margin:0}
+.cta a.btn{text-decoration:none;display:inline-block}
+
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .ios-tip{font-size:13px;color:var(--muted)}
 @media (max-width:520px){
@@ -362,17 +389,24 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 
 
 
+  <nav class="guides" aria-label="Guides">
+    <h2 data-i="guidesH">Prize bond guides</h2>
+    <ul>
+      <li><a href="prize-bond-draw-schedule"><b data-ien="Draw schedule" data-ibn="ড্রয়ের সময়সূচি">Draw schedule</b><span data-ien="Upcoming draw dates and prizes" data-ibn="আসন্ন ড্রয়ের তারিখ ও পুরস্কার">Upcoming draw dates and prizes</span></a></li>
+    </ul>
+  </nav>
+
   <section class="links">
     <h2 data-i="linksH">All prize bond draw results</h2>
     <ul id="drawLinks">
-      <li><a href="124th-prize-bond-draw-result" data-no="124"><b>124th draw</b><span>2 Aug 2026</span></a></li>
-      <li><a href="123rd-prize-bond-draw-result" data-no="123"><b>123rd draw</b><span>30 Apr 2026</span></a></li>
-      <li><a href="122nd-prize-bond-draw-result" data-no="122"><b>122nd draw</b><span>31 Jan 2026</span></a></li>
-      <li><a href="121st-prize-bond-draw-result" data-no="121"><b>121st draw</b><span>31 Oct 2025</span></a></li>
-      <li><a href="120th-prize-bond-draw-result" data-no="120"><b>120th draw</b><span>31 Jul 2025</span></a></li>
-      <li><a href="119th-prize-bond-draw-result" data-no="119"><b>119th draw</b><span>30 Apr 2025</span></a></li>
-      <li><a href="118th-prize-bond-draw-result" data-no="118"><b>118th draw</b><span>2 Feb 2025</span></a></li>
-      <li><a href="117th-prize-bond-draw-result" data-no="117" aria-current="page"><b>117th draw</b><span>31 Oct 2024</span></a></li>
+      <li><a href="124th-prize-bond-draw-result" data-no="124"><b data-ien="124th draw" data-ibn="১২৪তম ড্র">124th draw</b><span data-ien="2 Aug 2026" data-ibn="২ আগস্ট ২০২৬">2 Aug 2026</span></a></li>
+      <li><a href="123rd-prize-bond-draw-result" data-no="123"><b data-ien="123rd draw" data-ibn="১২৩তম ড্র">123rd draw</b><span data-ien="30 Apr 2026" data-ibn="৩০ এপ্রিল ২০২৬">30 Apr 2026</span></a></li>
+      <li><a href="122nd-prize-bond-draw-result" data-no="122"><b data-ien="122nd draw" data-ibn="১২২তম ড্র">122nd draw</b><span data-ien="31 Jan 2026" data-ibn="৩১ জানুয়ারি ২০২৬">31 Jan 2026</span></a></li>
+      <li><a href="121st-prize-bond-draw-result" data-no="121"><b data-ien="121st draw" data-ibn="১২১তম ড্র">121st draw</b><span data-ien="31 Oct 2025" data-ibn="৩১ অক্টোবর ২০২৫">31 Oct 2025</span></a></li>
+      <li><a href="120th-prize-bond-draw-result" data-no="120"><b data-ien="120th draw" data-ibn="১২০তম ড্র">120th draw</b><span data-ien="31 Jul 2025" data-ibn="৩১ জুলাই ২০২৫">31 Jul 2025</span></a></li>
+      <li><a href="119th-prize-bond-draw-result" data-no="119"><b data-ien="119th draw" data-ibn="১১৯তম ড্র">119th draw</b><span data-ien="30 Apr 2025" data-ibn="৩০ এপ্রিল ২০২৫">30 Apr 2025</span></a></li>
+      <li><a href="118th-prize-bond-draw-result" data-no="118"><b data-ien="118th draw" data-ibn="১১৮তম ড্র">118th draw</b><span data-ien="2 Feb 2025" data-ibn="২ ফেব্রুয়ারি ২০২৫">2 Feb 2025</span></a></li>
+      <li><a href="117th-prize-bond-draw-result" data-no="117" aria-current="page"><b data-ien="117th draw" data-ibn="১১৭তম ড্র">117th draw</b><span data-ien="31 Oct 2024" data-ibn="৩১ অক্টোবর ২০২৪">31 Oct 2024</span></a></li>
     </ul>
   </section>
 
@@ -382,6 +416,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
     <p class="ios-tip" id="iosTip" hidden data-i="iosTip">On iPhone: tap Share, then "Add to Home Screen" to install this as an app.</p>
   </footer>
 </div>
+
 
 <script>
 const DRAWS = [{"no":124,"date":"2026-08-02","first":["0786345"],"second":["0911829"],"third":["0486181","0700725"],"fourth":["0101571","0677548"],"fifth":["0050418","0115181","0139380","0146127","0152480","0185648","0293525","0307909","0311203","0393187","0454894","0483646","0505976","0534811","0542962","0544707","0559958","0588156","0605926","0654415","0669021","0706178","0740194","0758869","0760359","0775152","0808651","0825345","0842904","0870417","0878442","0891209","0900788","0912209","0924656","0946563","0952827","0967420","0970749","0979041"]},{"no":123,"date":"2026-04-30","first":["0001035"],"second":["0047748"],"third":["0538289","0675382"],"fourth":["0400451","0567644"],"fifth":["0021749","0022181","0056378","0092356","0144567","0155398","0155934","0175792","0217419","0246045","0296402","0311130","0356942","0393277","0413501","0452441","0461472","0462056","0478015","0480567","0512024","0551221","0564760","0573865","0588966","0596346","0600440","0607349","0639367","0642002","0650119","0688773","0749740","0759908","0772773","0813659","0848046","0849614","0922597","0947665"]},{"no":122,"date":"2026-01-31","first":["0017777"],"second":["0480133"],"third":["0766338","0939930"],"fourth":["0100001","0395408"],"fifth":["0015937","0023139","0041870","0074687","0099184","0111070","0145204","0165392","0175949","0212030","0212955","0268293","0292641","0299484","0312376","0323782","0323814","0373068","0378449","0398140","0401765","0406277","0484697","0559285","0576214","0597109","0678614","0702242","0703299","0720381","0721308","0812490","0839691","0868078","0891580","0931144","0932472","0955861","0990155","0995273"]},{"no":121,"date":"2025-10-31","first":["0108331"],"second":["0156897"],"third":["0056362","0453668"],"fourth":["0912444","0983572"],"fifth":["0013386","0014992","0028183","0053226","0119069","0168873","0244074","0257594","0265938","0292941","0296429","0327910","0340407","0349315","0355206","0367529","0369117","0417728","0425683","0501043","0515542","0549521","0565936","0602265","0620259","0624718","0674344","0712740","0759059","0769392","0782728","0791428","0799732","0821677","0865122","0903392","0904352","0922180","0936617","0985952"]},{"no":120,"date":"2025-07-31","first":["0544222"],"second":["0241768"],"third":["0553845","0964052"],"fourth":["0054382","0197142"],"fifth":["0006754","0031296","0053811","0067566","0104334","0111371","0149992","0164606","0193354","0222095","0222465","0254940","0298266","0311885","0323362","0328122","0376423","0403635","0419614","0524935","0541734","0582986","0613704","0629638","0657734","0657994","0665757","0674524","0689419","0702696","0708033","0735102","0751165","0755724","0772580","0824988","0826754","0841503","0848137","0870222"]},{"no":119,"date":"2025-04-30","first":["0264255"],"second":["0398068"],"third":["0239164","0442958"],"fourth":["0158649","0230224"],"fifth":["0012206","0021222","0048519","0054216","0064993","0069796","0087559","0145490","0239310","0243330","0244004","0281612","0311139","0343075","0357484","0375730","0390325","0404149","0419883","0449867","0473840","0489933","0494583","0497141","0570285","0591177","0595220","0616879","0665147","0726820","0770782","0783934","0793960","0823850","0829024","0865432","0879266","0951538","0963626","0968653"]},{"no":118,"date":"2025-02-02","first":["0603908"],"second":["0829320"],"third":["0167719","0334670"],"fourth":["0203607","0219185"],"fifth":["0012470","0017060","0023212","0053374","0067929","0095286","0104409","0205060","0208639","0238522","0243504","0253201","0275638","0336917","0347003","0364202","0384465","0433293","0466126","0516003","0522279","0537604","0576262","0583547","0606118","0606877","0651552","0655990","0663075","0680041","0680621","0693251","0722348","0744802","0747863","0787489","0815623","0860801","0932887","0939925"]},{"no":117,"date":"2024-10-31","first":["0806964"],"second":["0144370"],"third":["0307973","0922432"],"fourth":["0578366","0989676"],"fifth":["0031115","0041692","0042836","0151385","0152150","0154873","0156832","0184499","0199085","0212176","0219476","0222210","0239043","0279532","0296704","0305082","0334282","0335349","0354277","0355922","0372905","0376794","0463634","0485595","0544115","0559713","0580350","0581634","0613149","0688838","0738341","0749936","0790431","0796090","0851242","0876946","0885628","0897793","0987119","0997206"]}];
@@ -426,7 +461,7 @@ const T = {
   c2:"Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.",
   c3:"Claim within 2 years of the draw date. Tax is deducted from the prize at source.",
   formH:"Claim form",formPdf:"Bangladesh Bank claim form (PDF)",official:"Double-check on Bangladesh Bank's site",
-  ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",
+  ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",guidesH:"Prize bond guides",
   foot1:"Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.",
   foot2:"PrizeBond Check is free and not affiliated with Bangladesh Bank.",
   iosTip:"On iPhone: tap Share, then “Add to Home Screen” to install this as an app.",
@@ -473,7 +508,7 @@ const T = {
   c2:"দাবি ফরম পূরণ করে বন্ড ও জাতীয় পরিচয়পত্রসহ বাংলাদেশ ব্যাংকের অফিস বা যেকোনো তফসিলি ব্যাংকের শাখায় জমা দিন।",
   c3:"ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে দাবি করতে হবে। পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়।",
   formH:"দাবি ফরম",formPdf:"বাংলাদেশ ব্যাংকের দাবি ফরম (PDF)",official:"বাংলাদেশ ব্যাংকের সাইটে যাচাই করুন",
-  ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",
+  ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",guidesH:"প্রাইজবন্ড গাইড",
   foot1:"ফলাফল বাংলাদেশ ব্যাংকের ঘোষণা ও জাতীয় দৈনিক থেকে সংকলিত। পুরস্কার দাবি করতে যাওয়ার আগে বাংলাদেশ ব্যাংকে নিশ্চিত হয়ে নিন।",
   foot2:"প্রাইজবন্ড চেক বিনামূল্যে এবং বাংলাদেশ ব্যাংকের সাথে সম্পর্কিত নয়।",
   iosTip:"আইফোনে: Share চাপুন, তারপর “Add to Home Screen” চাপলে অ্যাপ হিসেবে যোগ হবে।",

@@ -14,6 +14,7 @@ import datetime, hashlib, html, json, pathlib, re, shutil, sys, zipfile
 SITE_URL = "https://checkprizebond.com"          # e.g. "https://prizebondcheck.com" (no trailing slash)
 SITE_NAME = "PrizeBond Check"
 SITE_NAME_BN = "প্রাইজবন্ড চেক"
+ANALYTICS_TOKEN = ""   # Cloudflare Web Analytics token (cookie-free visitor counter); empty = off
 
 HERE = pathlib.Path(__file__).parent
 TIERS = {"first": 1, "second": 1, "third": 2, "fourth": 2, "fifth": 40}
@@ -82,12 +83,22 @@ def links(page_draw, ext):
     out = []
     for d in slim:
         cur = ' aria-current="page"' if d["no"] == page_draw else ""
-        out.append(f'      <li><a href="{href(d["no"], ext)}" data-no="{d["no"]}"{cur}><b>{ordinal(d["no"])} draw</b><span>{fdate(pdate(d["date"]))}</span></a></li>')
+        out.append(f'      <li><a href="{href(d["no"], ext)}" data-no="{d["no"]}"{cur}>{bi("b", f"{ordinal(d['no'])} draw", f"{str(d['no']).translate(BN)}তম ড্র")}{bi("span", fdate(pdate(d["date"])), fdate_bn(pdate(d["date"])))}</a></li>')
     return "\n".join(out)
 
 def bi(tag, en, bn, cls=""):
     c = f' class="{cls}"' if cls else ""
     return f'<{tag}{c} data-ien="{e(en)}" data-ibn="{e(bn)}">{e(en)}</{tag}>'
+
+import guides
+CTX = dict(slim=slim, ordinal=ordinal, fdate=fdate, fdate_bn=fdate_bn, pdate=pdate, href=href, money=money, bi=bi, e=e)
+GUIDES = guides.build_guides(CTX)   # content pages: file, link text, titles, bodies (see guides.py)
+def ghref(g, ext): return g["file"][:-5] + ext
+def guidenav(current, ext):
+    items = "\n".join(
+        f'      <li><a href="{ghref(g, ext)}"{" aria-current=\"page\"" if g["file"] == current else ""}>'
+        f'{bi("b", g["nav_en"], g["nav_bn"])}{bi("span", g["blurb_en"], g["blurb_bn"])}</a></li>' for g in GUIDES)
+    return f'  <nav class="guides" aria-label="Guides">\n    <h2 data-i="guidesH">Prize bond guides</h2>\n    <ul>\n{items}\n    </ul>\n  </nav>'
 
 FAQ = [
  ("When is the prize bond draw held?", "প্রাইজবন্ডের ড্র কবে হয়?",
@@ -129,10 +140,13 @@ def head(title, desc, path, extra_ld=(), artifact=False):
     h += [jsonld(x) for x in extra_ld]
     return "\n".join(h)
 
-def page(intro, order, page_draw, board_draw, faq, head_html, home, ext=""):
+def page(intro, order, page_draw, board_draw, faq, head_html, home, ext="", current=None, artifact=False, extra_blocks=None):
     s = tpl.replace("<!--HEAD-->", head_html)
+    s = s.replace("<!--SECTION:guidenav-->", guidenav(current, ext))
+    s = s.replace("<!--SECTION:analytics-->", "" if artifact or not ANALYTICS_TOKEN else
+        f"<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" data-cf-beacon='{{\"token\": \"{ANALYTICS_TOKEN}\"}}'></script>")
     s = s.replace("<!--SECTION:intro-->", intro)
-    s = s.replace("<!--SECTION:order-->", "\n".join(blocks[b] for b in order))
+    s = s.replace("<!--SECTION:order-->", "\n".join((extra_blocks or {}).get(b) or blocks[b] for b in order))
     s = s.replace("<!--SECTION:board-->", static_board(board_draw, page_draw, ext))
     s = s.replace("<!--SECTION:links-->", links(page_draw, ext))
     s = s.replace("<!--SECTION:faq-->", faq)
@@ -174,7 +188,7 @@ pages = {}   # filename -> page body
 art_pages = {}
 home_args = (home_intro, ["checker", "claim", "ledger"], None, latest, faq_html())
 pages["index.html"] = page(*home_args, head(HOME_TITLE, HOME_DESC, "", home_ld), True)
-artifact_home = page(*home_args, head(SITE_NAME, HOME_DESC, "", artifact=True), True, ".html")
+artifact_home = page(*home_args, head(SITE_NAME, HOME_DESC, "", artifact=True), True, ".html", artifact=True)
 
 for d in slim:
     n, dt = d["no"], pdate(d["date"])
@@ -194,7 +208,62 @@ for d in slim:
     ld = [{"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "inLanguage": ["en", "bn"],
            "datePublished": d["date"], **({"url": f"{SITE_URL}/{href(n, '')}"} if SITE_URL else {})}]
     pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), ld), False)
-    art_pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), artifact=True), False, ".html")
+    art_pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), artifact=True), False, ".html", artifact=True)
+
+# ---------------- guide pages ----------------
+GUIDE_JS = """<script>
+/* guide pages: language switch, install button and offline support only */
+(function(){
+const BN_D="০১২৩৪৫৬৭৮৯",$=id=>document.getElementById(id);
+const T={en:{brand:"PrizeBond Check",install:"Install app",linksH:"All prize bond draw results",guidesH:"Prize bond guides",crumb:"Prize bond checker",
+  foot1:"Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.",
+  foot2:"PrizeBond Check is free and not affiliated with Bangladesh Bank.",iosTip:"On iPhone: tap Share, then \u201cAdd to Home Screen\u201d to install this as an app."},
+ bn:{brand:"প্রাইজবন্ড চেক",install:"অ্যাপ ইনস্টল করুন",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",guidesH:"প্রাইজবন্ড গাইড",crumb:"প্রাইজবন্ড চেকার",
+  foot1:"ফলাফল বাংলাদেশ ব্যাংকের ঘোষণা ও জাতীয় দৈনিক থেকে সংকলিত। পুরস্কার দাবি করতে যাওয়ার আগে বাংলাদেশ ব্যাংকে নিশ্চিত হয়ে নিন।",
+  foot2:"প্রাইজবন্ড চেক বিনামূল্যে এবং বাংলাদেশ ব্যাংকের সাথে সম্পর্কিত নয়।",iosTip:"আইফোনে: Share চাপুন, তারপর \u201cAdd to Home Screen\u201d চাপলে অ্যাপ হিসেবে যোগ হবে।"}};
+let lang="en";try{const l=localStorage.getItem("pb-lang");if(l==="bn"||l==="en")lang=l}catch(e){}
+function apply(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(el=>{const v=T[lang][el.dataset.i];if(typeof v==="string")el.textContent=v});
+  document.querySelectorAll("[data-ibn]").forEach(el=>{el.textContent=lang==="bn"?el.dataset.ibn:el.dataset.ien});
+  $("lang-en").setAttribute("aria-pressed",lang==="en");$("lang-bn").setAttribute("aria-pressed",lang==="bn");
+  document.dispatchEvent(new CustomEvent("pb-lang",{detail:lang}));
+}
+window.pbLang=()=>lang;window.pbBn=x=>String(x).replace(/\\d/g,d=>BN_D[d]);
+$("lang-en").onclick=()=>{lang="en";try{localStorage.setItem("pb-lang","en")}catch(e){}apply()};
+$("lang-bn").onclick=()=>{lang="bn";try{localStorage.setItem("pb-lang","bn")}catch(e){}apply()};
+let ev=null;const sa=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude|anthropic/.test(location.hostname)){
+  navigator.serviceWorker.register("sw.js").then(()=>{if(!sa&&/iphone|ipad|ipod/i.test(navigator.userAgent))$("iosTip").hidden=false}).catch(()=>{});
+}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();ev=e;$("installBtn").hidden=false});
+$("installBtn").onclick=async()=>{if(!ev)return;ev.prompt();try{await ev.userChoice}catch(e){}ev=null;$("installBtn").hidden=true};
+apply();
+})();
+</script>"""
+
+def guide_page(g, ext, artifact):
+    intro = f'''  <section class="intro">
+    <a class="crumb" href="./" data-i="crumb">Prize bond checker</a>
+    {bi("h1", g["h1_en"], g["h1_bn"])}
+    {bi("p", g["sub_en"], g["sub_bn"], "sub")}
+  </section>'''
+    body = g["body"](ext, CTX) if callable(g["body"]) else g["body"]
+    article = f'  <article class="guide">\n{body}\n  </article>'
+    cta = (f'  <aside class="cta">{bi("p", "Have prize bonds? Check all of them against the last 8 draws in one go.", "প্রাইজবন্ড আছে? সর্বশেষ ৮টি ড্রয়ের সাথে সব একসাথে মিলিয়ে নিন।")}'
+           f'<a class="btn" href="./">{bi("span", "Check my bonds", "বন্ড মিলিয়ে দেখুন")}</a></aside>')
+    ld = [] if artifact else [{"@context": "https://schema.org", "@type": "WebPage", "name": g["title"], "description": g["desc"],
+          "inLanguage": ["en", "bn"], **({"url": f"{SITE_URL}/{ghref(g, '')}"} if SITE_URL else {})}] + g.get("ld", [])
+    hd = head(g["title"], g["desc"], ghref(g, ""), ld, artifact=artifact)
+    s = page(intro, ["article", "cta"], None, latest, "", hd, False, ext, current=g["file"], artifact=artifact,
+             extra_blocks={"article": article, "cta": cta})
+    i = s.index("<script>\nconst DRAWS")
+    j = s.index("</script>", i) + len("</script>")
+    return s[:i] + GUIDE_JS + g.get("script", "") + s[j:]
+
+for g in GUIDES:
+    pages[g["file"]] = guide_page(g, "", False)
+    art_pages[g["file"]] = guide_page(g, ".html", True)
 
 # ---------------- write site/ ----------------
 SITE = HERE / "site"
@@ -247,7 +316,7 @@ manifest = {"name": f"{SITE_NAME} · {SITE_NAME_BN}", "short_name": SITE_NAME, "
                       {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}
 (SITE / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
 
-core = ["./", *[href(d["no"], "") for d in slim], "manifest.webmanifest", "vendor/xlsx.full.min.js",
+core = ["./", *[href(d["no"], "") for d in slim], *[ghref(g, "") for g in GUIDES], "manifest.webmanifest", "vendor/xlsx.full.min.js",
         "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png"]
 version = hashlib.sha1("".join(pages.values()).encode()).hexdigest()[:10]
 sw = f"""/* PrizeBond Check offline support. Pages: network first, so new draws show up. Everything else: cache first. */
@@ -279,7 +348,7 @@ notfound = page('''  <section class="intro">
 robots = "User-agent: *\nAllow: /\n" + (f"Sitemap: {SITE_URL}/sitemap.xml\n" if SITE_URL else "")
 (SITE / "robots.txt").write_text(robots, encoding="utf-8")
 if SITE_URL:
-    urls = [("", latest["date"])] + [(href(d["no"], ""), d["date"]) for d in slim]
+    urls = [("", latest["date"])] + [(ghref(g, ""), g["updated"]) for g in GUIDES] + [(href(d["no"], ""), d["date"]) for d in slim]
     sm = "".join(f"<url><loc>{SITE_URL}/{p}</loc><lastmod>{m}</lastmod></url>" for p, m in urls)
     (SITE / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>', encoding="utf-8")
 

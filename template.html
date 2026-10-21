@@ -193,6 +193,33 @@ details.checked summary{cursor:pointer;color:var(--muted);font-size:14px;margin-
 .faq dt{font-weight:600}
 .faq dd{margin:2px 0 0;color:var(--muted);max-width:68ch}
 
+/* language blocks on guide pages */
+html[lang="bn"] .l-en,html:not([lang="bn"]) .l-bn{display:none}
+/* guide nav */
+.guides h2{font-size:22px;margin-bottom:10px}
+.guides ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.guides li a{display:flex;flex-direction:column;gap:2px;background:var(--green-soft);border:1px solid transparent;border-radius:4px;padding:10px 12px;text-decoration:none;color:var(--ink);height:100%}
+.guides li a:hover{border-color:var(--green)}
+.guides li a b{font-weight:600}
+.guides li a span{font-size:13px;color:var(--muted)}
+.guides li a[aria-current="page"]{border-color:var(--green)}
+/* guide article */
+.guide{display:flex;flex-direction:column;gap:14px;max-width:70ch}
+.guide h2{font-size:24px;margin-top:10px}
+.guide h3{font-size:19px;margin-top:4px}
+.guide p,.guide li{color:var(--ink)}
+.guide ol,.guide ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.guide .note{background:var(--gold-soft);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 4px 4px 0;font-size:15px}
+.guide .src{font-size:13px;color:var(--muted)}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;width:100%;font-size:15px;background:var(--sheet)}
+.tbl th,.tbl td{border:1px solid var(--rule);padding:7px 10px;text-align:left;vertical-align:top}
+.tbl th{background:var(--green-soft);font-weight:600}
+.tbl td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--sheet);border:1px solid var(--green);border-radius:6px;padding:14px 16px}
+.cta p{flex:1 1 260px;margin:0}
+.cta a.btn{text-decoration:none;display:inline-block}
+
 footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .ios-tip{font-size:13px;color:var(--muted)}
 @media (max-width:520px){
@@ -231,6 +258,8 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 
 <!--SECTION:faq-->
 
+<!--SECTION:guidenav-->
+
   <section class="links">
     <h2 data-i="linksH">All prize bond draw results</h2>
     <ul id="drawLinks">
@@ -244,6 +273,7 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
     <p class="ios-tip" id="iosTip" hidden data-i="iosTip">On iPhone: tap Share, then "Add to Home Screen" to install this as an app.</p>
   </footer>
 </div>
+<!--SECTION:analytics-->
 
 <!--BLOCK:checker-->
   <form class="cert" id="form" novalidate>
@@ -393,7 +423,7 @@ const T = {
   c2:"Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.",
   c3:"Claim within 2 years of the draw date. Tax is deducted from the prize at source.",
   formH:"Claim form",formPdf:"Bangladesh Bank claim form (PDF)",official:"Double-check on Bangladesh Bank's site",
-  ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",
+  ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",guidesH:"Prize bond guides",
   foot1:"Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.",
   foot2:"PrizeBond Check is free and not affiliated with Bangladesh Bank.",
   iosTip:"On iPhone: tap Share, then “Add to Home Screen” to install this as an app.",
@@ -440,7 +470,7 @@ const T = {
   c2:"দাবি ফরম পূরণ করে বন্ড ও জাতীয় পরিচয়পত্রসহ বাংলাদেশ ব্যাংকের অফিস বা যেকোনো তফসিলি ব্যাংকের শাখায় জমা দিন।",
   c3:"ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে দাবি করতে হবে। পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়।",
   formH:"দাবি ফরম",formPdf:"বাংলাদেশ ব্যাংকের দাবি ফরম (PDF)",official:"বাংলাদেশ ব্যাংকের সাইটে যাচাই করুন",
-  ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",
+  ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",guidesH:"প্রাইজবন্ড গাইড",
   foot1:"ফলাফল বাংলাদেশ ব্যাংকের ঘোষণা ও জাতীয় দৈনিক থেকে সংকলিত। পুরস্কার দাবি করতে যাওয়ার আগে বাংলাদেশ ব্যাংকে নিশ্চিত হয়ে নিন।",
   foot2:"প্রাইজবন্ড চেক বিনামূল্যে এবং বাংলাদেশ ব্যাংকের সাথে সম্পর্কিত নয়।",
   iosTip:"আইফোনে: Share চাপুন, তারপর “Add to Home Screen” চাপলে অ্যাপ হিসেবে যোগ হবে।",
