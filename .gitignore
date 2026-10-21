@@ -1,0 +1,4 @@
+# build extras not needed on GitHub (site/ IS committed: Cloudflare serves it)
+artifact/
+site.zip
+__pycache__/

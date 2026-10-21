@@ -1,0 +1,888 @@
+<!--HEAD-->
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla&family=Hind+Siliguri:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a bond certificate. Guilloche-bordered input "certificate", ticket stubs for wins, ledger of draws. */
+:root{
+  --paper:#f3f5ef;      /* bond paper, faint green bias */
+  --sheet:#fbfcf8;
+  --ink:#16261f;        /* green-black ink */
+  --muted:#5a6b62;
+  --rule:#cdd7cf;
+  --green:#0b6b4f;      /* bond print green */
+  --green-soft:#e1ede6;
+  --seal:#c2283a;       /* red serial-number ink */
+  --seal-soft:#f8e3e5;
+  --gold:#9a6a12;
+  --gold-soft:#f6ecd8;
+  --display:"Tiro Bangla",Georgia,"Times New Roman",serif;
+  --body:"Hind Siliguri",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0f1814;--sheet:#15211b;--ink:#e3ece6;--muted:#93a69b;--rule:#2a3a32;
+  --green:#4fbf93;--green-soft:#1b3328;--seal:#ff6b7a;--seal-soft:#3a1d22;--gold:#e0b25a;--gold-soft:#33291a;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1814;--sheet:#15211b;--ink:#e3ece6;--muted:#93a69b;--rule:#2a3a32;
+  --green:#4fbf93;--green-soft:#1b3328;--seal:#ff6b7a;--seal-soft:#3a1d22;--gold:#e0b25a;--gold-soft:#33291a;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+a{color:var(--green)}
+button,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+
+/* header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand .mark{width:34px;height:34px;border-radius:50%;border:2px solid var(--green);display:grid;place-items:center;
+  font-family:var(--display);color:var(--green);font-size:18px;line-height:1}
+.brand b{font-family:var(--display);font-weight:400;font-size:20px}
+.top-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lang{display:flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden}
+.lang button{background:none;border:0;padding:5px 12px;cursor:pointer;font-size:14px;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--green);color:var(--sheet)}
+.install{background:none;border:1px solid var(--green);color:var(--green);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+
+.intro{display:flex;flex-direction:column;gap:8px;max-width:64ch}
+.intro h1{font-size:clamp(28px,5vw,40px)}
+.intro .sub{font-family:var(--display);font-size:18px;color:var(--green)}
+.intro p.lede{color:var(--muted)}
+.free{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:600}
+.crumb{font-size:14px;color:var(--muted)}
+
+.newdraw{display:flex;gap:12px;align-items:flex-start;background:var(--gold-soft);border:1px solid var(--gold);border-radius:6px;padding:14px 16px}
+.newdraw b{display:block;font-family:var(--display);font-weight:400;font-size:18px}
+.newdraw p{font-size:14px;color:var(--muted)}
+.newdraw .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--gold);margin-top:8px}
+
+/* certificate input */
+.cert{position:relative;background:var(--sheet);padding:22px;border-radius:6px;
+  border:1px solid var(--rule);
+  box-shadow:0 0 0 6px var(--sheet),0 0 0 7px var(--green),0 0 0 10px var(--sheet),0 0 0 11px var(--rule);
+  margin:11px;display:flex;flex-direction:column;gap:14px}
+.cert::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;border-radius:6px;
+  background:repeating-radial-gradient(circle at 100% 0,transparent 0 9px,var(--green-soft) 9px 10px)}
+.cert>*{position:relative}
+.cert-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cert-head h2{font-size:22px}
+.serial{font-family:var(--mono);color:var(--seal);font-size:13px;letter-spacing:.06em}
+label.lbl{font-size:13px;color:var(--muted)}
+textarea#bonds{width:100%;min-height:150px;resize:vertical;background:var(--paper);border:1px solid var(--rule);border-radius:4px;
+  padding:12px;font-family:var(--mono);font-size:16px;line-height:1.6}
+.hints{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.hints code{font-family:var(--mono);color:var(--ink);background:var(--green-soft);padding:0 5px;border-radius:3px}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{background:var(--green);color:var(--sheet);border:0;border-radius:4px;padding:11px 22px;font-weight:600;cursor:pointer;font-size:16px}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:default}
+.ghost{background:none;border:1px solid var(--rule);border-radius:4px;padding:10px 14px;cursor:pointer;color:var(--muted)}
+.ghost:hover{color:var(--ink);border-color:var(--muted)}
+.saved{font-size:13px;color:var(--muted);margin-left:auto}
+.upload{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--rule);border-radius:4px;padding:12px;transition:background .15s,border-color .15s}
+.upload.over{background:var(--green-soft);border-color:var(--green)}
+.up-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.up-btn{display:inline-flex;align-items:center;gap:8px;color:var(--ink);cursor:pointer;position:relative}
+.up-btn:focus-within{outline:2px solid var(--green);outline-offset:2px}
+.up-btn svg{flex:none;color:var(--green)}
+.up-note{font-size:13px;color:var(--muted);min-width:0;flex:1 1 220px}
+.up-msg{font-size:14px;color:var(--green);font-weight:500}
+.up-msg.bad{color:var(--seal)}
+.fmt summary{cursor:pointer;font-size:14px;color:var(--green)}
+.fmt-body{display:flex;flex-direction:column;gap:10px;padding-top:8px;font-size:14px;color:var(--muted);max-width:68ch}
+.sheet{overflow-x:auto}
+.sheet table{border-collapse:collapse;font-family:var(--mono);font-size:13px;background:var(--paper)}
+.sheet th,.sheet td{border:1px solid var(--rule);padding:3px 10px;text-align:left;color:var(--ink);white-space:nowrap}
+.sheet th{background:var(--green-soft);color:var(--muted);font-weight:500;text-align:center}
+.err{font-size:14px;color:var(--seal)}
+
+/* camera scan review */
+.scan{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:14px;background:var(--paper);border:1px solid var(--green);border-radius:6px;padding:14px}
+.scan img{width:100%;border-radius:4px;border:1px solid var(--rule);display:block}
+.scan-r{display:flex;flex-direction:column;gap:8px;min-width:0}
+.scan-r h3{font-size:18px}
+.scan-r p{font-size:14px;color:var(--muted)}
+.bar{height:6px;border-radius:3px;background:var(--rule);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+#scanNums{width:100%;min-height:110px;font-family:var(--mono);font-size:15px;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;resize:vertical}
+.scan-tip{font-size:13px!important}
+
+.keep{display:flex;align-items:center;gap:16px;background:var(--sheet);border:1px solid var(--green);border-radius:6px;padding:16px 18px;flex-wrap:wrap}
+.keep-ic{color:var(--green);flex:none;width:40px;height:40px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center}
+.keep-txt{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.keep-txt h3{font-size:18px}
+.keep-txt p{font-size:14px;color:var(--muted);max-width:62ch}
+.keep-msg{font-weight:500;color:var(--green)!important}
+.keep-msg.bad{color:var(--seal)!important}
+.keep-btn{flex:none}
+
+/* results */
+#results{display:flex;flex-direction:column;gap:16px}
+.summary{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:12px}
+.summary h2{font-size:24px}
+.summary .stat{color:var(--muted);font-size:15px}
+.summary .stat b{color:var(--ink);font-family:var(--mono);font-weight:600}
+.example{font-size:13px;color:var(--gold);border:1px dashed var(--gold);border-radius:4px;padding:6px 10px}
+
+.wins{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.stub{display:flex;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;overflow:hidden;min-width:0}
+.stub .amt{background:var(--seal);color:var(--sheet);padding:14px 12px;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;min-width:108px;border-right:2px dashed var(--sheet);text-align:center}
+.stub .amt .tk{font-family:var(--mono);font-weight:600;font-size:15px;white-space:nowrap}
+.stub .amt small{font-size:12px;opacity:.9}
+.stub .info{padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.stub .num{font-family:var(--mono);font-size:20px;font-weight:600;letter-spacing:.06em}
+.stub .owner{font-size:14px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.stub .meta{font-size:13px;color:var(--muted)}
+.stub .due{font-size:13px;font-weight:600;color:var(--green)}
+.stub .due.soon{color:var(--seal)}
+.stub .due.gone{color:var(--muted);text-decoration:line-through}
+.share{align-self:flex-start;margin-top:6px;background:none;border:1px solid var(--rule);border-radius:999px;padding:3px 12px;font-size:13px;cursor:pointer;color:var(--green);display:inline-flex;gap:6px;align-items:center}
+.share:hover{border-color:var(--green)}
+.share-msg{font-size:12px;color:var(--muted)}
+.nowin{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;color:var(--muted)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:14px;padding:2px 8px;border-radius:3px;background:var(--sheet);border:1px solid var(--rule);color:var(--muted)}
+.chip.win{background:var(--seal-soft);border-color:var(--seal);color:var(--seal);font-weight:600}
+.chip i{font-family:var(--body);font-style:normal;font-size:12px;margin-left:6px;color:var(--ink)}
+details.checked summary{cursor:pointer;color:var(--muted);font-size:14px;margin-bottom:8px}
+
+/* claim */
+.claim{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;background:var(--green-soft);border-radius:6px;padding:18px 20px}
+.claim h3{font-size:18px;margin-bottom:4px}
+.claim p,.claim li{font-size:15px}
+.claim ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+
+/* ledger */
+.ledger{display:flex;flex-direction:column;gap:14px}
+.ledger-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.ledger-head h2{font-size:24px}
+.ledger-head p{color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.tabs button{flex:none;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:6px 12px;cursor:pointer;font-size:14px;color:var(--muted);text-align:left}
+.tabs button b{display:block;font-family:var(--mono);color:var(--ink);font-weight:600}
+.tabs button[aria-selected="true"]{border-color:var(--green);box-shadow:inset 0 -3px 0 var(--green)}
+.tabs button .x{font-size:11px;color:var(--seal)}
+.board{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.board-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--muted)}
+.tier{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:start;border-top:1px solid var(--rule);padding-top:12px}
+.tier .t{font-size:14px}
+.tier .t b{display:block;font-family:var(--mono);font-weight:600}
+.tier .t span{display:block;color:var(--muted);font-size:13px}
+.tier .nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums}
+.tier.big .nums{font-size:19px;color:var(--seal);font-weight:600}
+.tier .nums .hit{background:var(--seal);color:var(--sheet);border-radius:3px;padding:0 4px}
+
+/* draw links, faq */
+.links h2,.faq h2{font-size:22px;margin-bottom:10px}
+.links ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.links li a{display:flex;flex-direction:column;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;padding:8px 12px;text-decoration:none;color:var(--ink)}
+.links li a:hover{border-color:var(--green)}
+.links li a b{font-weight:600}
+.links li a span{font-size:13px;color:var(--muted)}
+.links li a[aria-current="page"]{border-color:var(--green);box-shadow:inset 3px 0 0 var(--green)}
+.faq dl{margin:0;display:flex;flex-direction:column;gap:14px}
+.faq dt{font-weight:600}
+.faq dd{margin:2px 0 0;color:var(--muted);max-width:68ch}
+
+footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.ios-tip{font-size:13px;color:var(--muted)}
+@media (max-width:520px){
+  .tier{grid-template-columns:1fr}
+  .cert{padding:16px}
+  .saved{margin-left:0;width:100%}
+  .scan{grid-template-columns:1fr}
+  .scan img{max-height:200px;object-fit:contain}
+}
+@media (prefers-reduced-motion:no-preference){
+  .stub{animation:pop .35s ease-out both}
+  @keyframes pop{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><span class="mark">৳</span><b data-i="brand">PrizeBond Check</b></a>
+    <div class="top-r">
+      <button class="install" id="installBtn" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2"/></svg><span data-i="install">Install app</span></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button id="lang-en" type="button" aria-pressed="true">English</button>
+        <button id="lang-bn" type="button" aria-pressed="false">বাংলা</button>
+      </div>
+    </div>
+  </header>
+
+<!--SECTION:intro-->
+
+  <div class="newdraw" id="newDraw" hidden>
+    <span class="dot" aria-hidden="true"></span>
+    <div><b id="newDrawH"></b><p id="newDrawP"></p></div>
+  </div>
+
+<!--SECTION:order-->
+
+<!--SECTION:faq-->
+
+  <section class="links">
+    <h2 data-i="linksH">All prize bond draw results</h2>
+    <ul id="drawLinks">
+<!--SECTION:links-->
+    </ul>
+  </section>
+
+  <footer>
+    <p data-i="foot1">Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.</p>
+    <p data-i="foot2">PrizeBond Check is free and not affiliated with Bangladesh Bank.</p>
+    <p class="ios-tip" id="iosTip" hidden data-i="iosTip">On iPhone: tap Share, then "Add to Home Screen" to install this as an app.</p>
+  </footer>
+</div>
+
+<!--BLOCK:checker-->
+  <form class="cert" id="form" novalidate>
+    <div class="cert-head">
+      <h2 data-i="yourBonds">Your bonds</h2>
+      <span class="serial" id="serial">কখ 0000000</span>
+    </div>
+    <label class="lbl" for="bonds" data-i="paste">Bond numbers (series letters are ignored, every series uses the same winning numbers)</label>
+    <textarea id="bonds" spellcheck="false" autocomplete="off"></textarea>
+    <div class="hints">
+      <span><span data-i="hintOne">One per line or comma-separated:</span> <code>0123456, 0786345</code></span>
+      <span><span data-i="hintJoin">Or typed together:</span> <code>01234560786345</code></span>
+      <span><span data-i="hintRange">A serial run (- or ~):</span> <code>0012345-0012360</code></span>
+      <span><span data-i="hintName">Add a name to see whose bond won:</span> <code>Abbu: 0123456, 0786345</code></span>
+      <span data-i="hintBn">বাংলা digits work too</span>
+    </div>
+    <div class="upload" id="drop">
+      <div class="up-row">
+        <label class="ghost up-btn"><input class="vh" type="file" id="photo" accept="image/*" capture="environment"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="13" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span data-i="scanBtn">Scan bonds with camera</span></label>
+        <label class="ghost up-btn"><input class="vh" type="file" id="file" accept=".xlsx,.xls,.xlsm,.ods,.csv,.txt,text/plain,text/csv" multiple><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z M9 12h6M9 15h6M9 18h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span data-i="upBtn">Upload Excel file</span></label>
+        <span class="up-note" data-i="upNote">Excel, CSV or text file. You can also drag it here.</span>
+      </div>
+      <details class="fmt">
+        <summary data-i="fmtH">File format</summary>
+        <div class="fmt-body">
+          <p data-i="fmt1">Just put your bond numbers in one column, one number per cell.</p>
+          <div class="sheet" aria-hidden="true">
+            <table><thead><tr><th></th><th>A</th></tr></thead>
+            <tbody><tr><th>1</th><td>0123456</td></tr>
+            <tr><th>2</th><td>0786345</td></tr>
+            <tr><th>3</th><td>0505976</td></tr>
+            <tr><th>4</th><td>0400100</td></tr></tbody></table>
+          </div>
+          <p data-i="fmt2">Optional: put a name in the next column to see whose bond won.</p>
+        </div>
+      </details>
+      <p class="up-msg" id="upMsg" hidden></p>
+    </div>
+
+    <div class="scan" id="scan" hidden>
+      <img id="scanImg" alt="">
+      <div class="scan-r">
+        <h3 id="scanH" data-i="scanH">Reading your photo…</h3>
+        <div class="bar" id="scanBar"><i id="scanProg"></i></div>
+        <p id="scanStatus"></p>
+        <textarea id="scanNums" spellcheck="false" hidden></textarea>
+        <p class="scan-tip" id="scanTip" hidden data-i="scanTip">Compare these with your bonds. The camera can misread a digit, so fix any mistakes before adding.</p>
+        <div class="actions">
+          <button class="btn" type="button" id="scanAdd" hidden data-i="scanAdd">Add to my bonds</button>
+          <button class="ghost" type="button" id="scanCancel" data-i="scanCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" type="submit" data-i="check">Check my bonds</button>
+      <button class="ghost" type="button" id="clear" data-i="clear">Clear</button>
+      <span class="saved" id="saved" data-i="saved">Saved on this device only. Nothing is sent anywhere.</span>
+    </div>
+    <p class="err" id="err" hidden></p>
+  </form>
+
+  <aside class="keep" id="keep" hidden>
+    <div class="keep-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 3h10l4 4v14H5z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 11h8M8 14h8M8 17h5" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="keep-txt">
+      <h3 data-i="keepH">Keep your bonds in one Excel sheet</h3>
+      <p data-i="keepP">Download your numbers once and keep the file safe. After every new draw, upload it here and all your bonds are checked in one click.</p>
+      <p class="keep-msg" id="keepMsg" hidden></p>
+    </div>
+    <button class="btn keep-btn" type="button" id="dlSheet"><span data-i="keepBtn">Download Excel sheet</span></button>
+  </aside>
+
+  <section id="results" aria-live="polite"></section>
+<!--/BLOCK-->
+
+<!--BLOCK:claim-->
+  <section class="claim">
+    <div>
+      <h3 data-i="claimH">Won something?</h3>
+      <ol>
+        <li data-i="c1">Keep the original bond safe. You must hand it in.</li>
+        <li data-i="c2">Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.</li>
+        <li data-i="c3">Claim within 2 years of the draw date. Tax is deducted from the prize at source.</li>
+      </ol>
+    </div>
+    <div>
+      <h3 data-i="formH">Claim form</h3>
+      <p><a href="https://www.bb.org.bd/services/forms/pbond_claimform.pdf" target="_blank" rel="noopener" data-i="formPdf">Bangladesh Bank claim form (PDF)</a></p>
+      <p style="margin-top:8px"><a href="https://www.bb.org.bd/en/index.php/investfacility/prizebond" target="_blank" rel="noopener" data-i="official">Double-check on Bangladesh Bank's site</a></p>
+    </div>
+  </section>
+<!--/BLOCK-->
+
+<!--BLOCK:ledger-->
+  <section class="ledger">
+    <div class="ledger-head">
+      <h2 data-i="ledgerH">Winning numbers</h2>
+      <p id="nextDraw"></p>
+    </div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="board" id="board" role="tabpanel">
+<!--SECTION:board-->
+    </div>
+  </section>
+<!--/BLOCK-->
+
+<script>
+const DRAWS = /*__DRAWS__*/[];
+const PAGE = /*__PAGE__*/{draw:null};
+const NEXT_DRAW = {no:125, date:"2026-10-31"};
+const PRIZES = [
+  {k:"first", amt:600000, en:"1st prize", bn:"১ম পুরস্কার"},
+  {k:"second",amt:325000, en:"2nd prize", bn:"২য় পুরস্কার"},
+  {k:"third", amt:100000, en:"3rd prize", bn:"৩য় পুরস্কার"},
+  {k:"fourth",amt:50000,  en:"4th prize", bn:"৪র্থ পুরস্কার"},
+  {k:"fifth", amt:10000,  en:"5th prize", bn:"৫ম পুরস্কার"}
+];
+const MAX_BONDS = 20000;
+const EXAMPLE = "কখ 0123456, কঝ 0786345\nAbbu: 05059760139380\n0400100-0400104";
+const BN_D="০১২৩৪৫৬৭৮৯";
+function bn(x){return String(x).replace(/\d/g,d=>BN_D[d])}
+function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
+const slug=n=>`${ordinal(n)}-prize-bond-draw-result.html`;
+
+const T = {
+ en:{brand:"PrizeBond Check",free:"Free · no sign-up · no ads",h1:"Prize bond result check: all your bonds in one go",
+  lede:"Paste every 100 Taka bond you own, upload your Excel sheet, or scan the bonds with your camera. We check them against the last 8 Bangladesh Bank draws, the ones you can still claim.",
+  install:"Install app",
+  yourBonds:"Your bonds",paste:"Bond numbers (series letters are ignored, every series uses the same winning numbers)",
+  hintOne:"One per line or comma-separated:",hintJoin:"Or typed together:",hintRange:"A serial run (- or ~):",hintName:"Add a name to see whose bond won:",hintBn:"বাংলা digits work too",
+  scanBtn:"Scan bonds with camera",upBtn:"Upload Excel file",upNote:"Excel, CSV or text file. You can also drag it here.",fmtH:"File format",
+  fmt1:"Just put your bond numbers in one column, one number per cell.",fmt2:"Optional: put a name in the next column to see whose bond won.",
+  upOk:(n,f)=>`Added ${n} bond number${n===1?"":"s"} from ${f}.`,upNone:f=>`No bond numbers found in ${f}. Check the file format below.`,
+  upType:f=>`${f} isn't a supported file. Use Excel (.xlsx, .xls), CSV or a text file.`,upFail:f=>`Couldn't read ${f}. Save it again as .xlsx or .csv and try once more.`,
+  upLib:"Couldn't load the Excel reader. Check your internet connection, or save the sheet as .csv and upload that.",upBusy:"Reading file…",
+  scanH:"Reading your photo…",scanLoad:"Loading the number reader (only the first time, about 10 MB)…",scanRead:p=>`Reading numbers… ${p}%`,
+  scanFound:n=>`Found ${n} bond number${n===1?"":"s"}`,scanNone:"No bond numbers found",
+  scanNoneP:"Try again in good light, with the bonds flat and the numbers in focus. Or type the numbers in the box.",
+  scanTip:"Compare these with your bonds. The camera can misread a digit, so fix any mistakes before adding.",
+  scanAdd:"Add to my bonds",scanCancel:"Cancel",scanFail:"The number reader couldn't start. Check your internet connection and try again, or type the numbers in.",
+  scanAdded:n=>`Added ${n} number${n===1?"":"s"} from the photo.`,
+  keepH:"Keep your bonds in one Excel sheet",keepP:"Download your numbers once and keep the file safe. After every new draw, upload it here and all your bonds are checked in one click.",
+  keepBtn:"Download Excel sheet",keepOk:n=>`Saved ${n} bond number${n===1?"":"s"} as my-prize-bonds.xlsx. Keep it with your bonds.`,
+  keepNo:"Download cancelled.",keepFail:"Couldn't create the sheet. Check your internet connection and try again.",keepBusy:"Preparing your sheet…",
+  check:"Check my bonds",clear:"Clear",saved:"Saved on this device only. Nothing is sent anywhere.",
+  claimH:"Won something?",c1:"Keep the original bond safe. You must hand it in.",
+  c2:"Fill in the claim form and take it, with the bond and your NID, to a Bangladesh Bank office or any scheduled bank branch.",
+  c3:"Claim within 2 years of the draw date. Tax is deducted from the prize at source.",
+  formH:"Claim form",formPdf:"Bangladesh Bank claim form (PDF)",official:"Double-check on Bangladesh Bank's site",
+  ledgerH:"Winning numbers",linksH:"All prize bond draw results",faqH:"Prize bond questions",
+  foot1:"Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.",
+  foot2:"PrizeBond Check is free and not affiliated with Bangladesh Bank.",
+  iosTip:"On iPhone: tap Share, then “Add to Home Screen” to install this as an app.",
+  checked:n=>`${n} bond${n===1?"":"s"} checked`, drawsN:n=>`against ${n} draws`,
+  wonH:n=>n?"You have a winning bond":"No wins this time",
+  total:"Total",draw:n=>`${ordinal(n)} draw`,claimBy:d=>`Claim by ${d}`,daysLeft:n=>`${n} days left`,expired:"Claim period over",
+  nowin:"None of these numbers won in the last 8 draws. Keep them: every bond enters every draw.",
+  example:"Showing example numbers. Replace them with your own.",
+  allChecked:"All numbers checked",
+  empty:"Enter at least one bond number.",tooMany:n=>`That's more than ${n} bonds. Split the list into smaller parts.`,
+  bad:s=>`Skipped (not a 7-digit bond number): ${s}`,
+  next:(n,d)=>`Next: ${ordinal(n)} draw, ${d}. Numbers are added after it's announced.`,
+  held:d=>`Held ${d}`,claimUntil:d=>`Claimable until ${d}`,exp:"Claim period over",
+  each:n=>`${n} numbers`,expSoon:n=>`expires in ${n} days`,resultPage:"Result page",
+  newH:n=>`New result: the ${ordinal(n)} draw is in`,newH2:n=>`${n} new draws since your last visit`,
+  newP:"Your saved bonds were checked automatically. See below.",
+  share:"Share",shareSaved:"Picture saved.",shareFail:"Couldn't share the picture.",
+  imgWon:"I won",imgDraw:(n,d)=>`${ordinal(n)} prize bond draw · ${d}`,imgBond:"Bond",imgCheck:"Checked free at",
+  shareText:(a,n)=>`I won ${a} in the ${ordinal(n)} prize bond draw! I checked all my bonds free with PrizeBond Check.`,
+  dh1:n=>`${ordinal(n)} Prize Bond Draw Result`,
+  dlede:(n,d,f)=>`The ${ordinal(n)} draw of the Bangladesh Bank 100 Taka prize bond was held on ${d}. The first prize of ৳6,00,000 went to bond number ${f}. Below are all 46 winning numbers, and a free checker for all your bonds.`,
+  crumb:"All draw results"},
+ bn:{brand:"প্রাইজবন্ড চেক",free:"বিনামূল্যে · কোনো সাইন-আপ নেই · বিজ্ঞাপন নেই",h1:"প্রাইজবন্ড ড্র ফলাফল: সব বন্ড একসাথে মিলিয়ে নিন",
+  lede:"আপনার সব ১০০ টাকার বন্ডের নম্বর লিখুন, এক্সেল শিট আপলোড করুন, অথবা ক্যামেরায় বন্ড স্ক্যান করুন। বাংলাদেশ ব্যাংকের সর্বশেষ ৮টি ড্রয়ের সাথে মিলিয়ে দেখাবো, যেগুলোর পুরস্কার এখনো দাবি করা যায়।",
+  install:"অ্যাপ ইনস্টল করুন",
+  yourBonds:"আপনার বন্ড",paste:"বন্ড নম্বর (সিরিজের অক্ষর লাগবে না, সব সিরিজে একই বিজয়ী নম্বর)",
+  hintOne:"প্রতি লাইনে একটি বা কমা দিয়ে:",hintJoin:"অথবা একসাথে টাইপ করে:",hintRange:"ক্রমিক নম্বর (- বা ~ দিয়ে):",hintName:"কার বন্ড জিতেছে জানতে নাম দিন:",hintBn:"English digits-ও চলবে",
+  scanBtn:"ক্যামেরায় বন্ড স্ক্যান করুন",upBtn:"এক্সেল ফাইল আপলোড করুন",upNote:"এক্সেল, CSV বা টেক্সট ফাইল। এখানে টেনে এনেও ছাড়তে পারেন।",fmtH:"ফাইলের ফরম্যাট",
+  fmt1:"শুধু একটি কলামে বন্ড নম্বরগুলো দিন, প্রতি ঘরে একটি করে।",fmt2:"চাইলে পাশের কলামে নাম দিন, তাহলে কার বন্ড জিতেছে দেখা যাবে।",
+  upOk:(n,f)=>`${f} থেকে ${bn(n)}টি বন্ড নম্বর যোগ হয়েছে।`,upNone:f=>`${f} ফাইলে কোনো বন্ড নম্বর পাওয়া যায়নি। নিচে ফাইলের ফরম্যাট দেখুন।`,
+  upType:f=>`${f} সমর্থিত ফাইল নয়। এক্সেল (.xlsx, .xls), CSV বা টেক্সট ফাইল দিন।`,upFail:f=>`${f} পড়া যায়নি। .xlsx বা .csv হিসেবে আবার সেভ করে চেষ্টা করুন।`,
+  upLib:"এক্সেল রিডার লোড হয়নি। ইন্টারনেট সংযোগ দেখুন, অথবা শিটটি .csv হিসেবে সেভ করে আপলোড করুন।",upBusy:"ফাইল পড়া হচ্ছে…",
+  scanH:"ছবি পড়া হচ্ছে…",scanLoad:"নম্বর রিডার লোড হচ্ছে (শুধু প্রথমবার, প্রায় ১০ MB)…",scanRead:p=>`নম্বর পড়া হচ্ছে… ${bn(p)}%`,
+  scanFound:n=>`${bn(n)}টি বন্ড নম্বর পাওয়া গেছে`,scanNone:"কোনো বন্ড নম্বর পাওয়া যায়নি",
+  scanNoneP:"ভালো আলোতে, বন্ড সমান করে রেখে, নম্বর পরিষ্কার করে আবার ছবি তুলুন। অথবা বক্সে নম্বর লিখুন।",
+  scanTip:"আপনার বন্ডের সাথে মিলিয়ে নিন। ক্যামেরা কোনো অঙ্ক ভুল পড়তে পারে, যোগ করার আগে ঠিক করে নিন।",
+  scanAdd:"আমার বন্ডে যোগ করুন",scanCancel:"বাতিল",scanFail:"নম্বর রিডার চালু হয়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন, অথবা নম্বর লিখে দিন।",
+  scanAdded:n=>`ছবি থেকে ${bn(n)}টি নম্বর যোগ হয়েছে।`,
+  keepH:"সব বন্ড একটি এক্সেল শিটে রেখে দিন",keepP:"একবার আপনার নম্বরগুলো ডাউনলোড করে ফাইলটি যত্নে রাখুন। প্রতিটি নতুন ড্রয়ের পর এখানে আপলোড করলেই এক ক্লিকে সব বন্ড মিলিয়ে দেখা যাবে।",
+  keepBtn:"এক্সেল শিট ডাউনলোড করুন",keepOk:n=>`${bn(n)}টি বন্ড নম্বর my-prize-bonds.xlsx হিসেবে সেভ হয়েছে। বন্ডের সাথে রেখে দিন।`,
+  keepNo:"ডাউনলোড বাতিল হয়েছে।",keepFail:"শিট তৈরি করা যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।",keepBusy:"শিট তৈরি হচ্ছে…",
+  check:"বন্ড মিলিয়ে দেখুন",clear:"মুছুন",saved:"শুধু এই ডিভাইসে সংরক্ষিত। কোথাও পাঠানো হয় না।",
+  claimH:"পুরস্কার পেয়েছেন?",c1:"আসল বন্ডটি যত্নে রাখুন। এটি জমা দিতে হবে।",
+  c2:"দাবি ফরম পূরণ করে বন্ড ও জাতীয় পরিচয়পত্রসহ বাংলাদেশ ব্যাংকের অফিস বা যেকোনো তফসিলি ব্যাংকের শাখায় জমা দিন।",
+  c3:"ড্রয়ের তারিখ থেকে ২ বছরের মধ্যে দাবি করতে হবে। পুরস্কারের অর্থ থেকে উৎসে কর কাটা হয়।",
+  formH:"দাবি ফরম",formPdf:"বাংলাদেশ ব্যাংকের দাবি ফরম (PDF)",official:"বাংলাদেশ ব্যাংকের সাইটে যাচাই করুন",
+  ledgerH:"বিজয়ী নম্বর",linksH:"সব প্রাইজবন্ড ড্রয়ের ফলাফল",faqH:"প্রাইজবন্ড নিয়ে প্রশ্ন",
+  foot1:"ফলাফল বাংলাদেশ ব্যাংকের ঘোষণা ও জাতীয় দৈনিক থেকে সংকলিত। পুরস্কার দাবি করতে যাওয়ার আগে বাংলাদেশ ব্যাংকে নিশ্চিত হয়ে নিন।",
+  foot2:"প্রাইজবন্ড চেক বিনামূল্যে এবং বাংলাদেশ ব্যাংকের সাথে সম্পর্কিত নয়।",
+  iosTip:"আইফোনে: Share চাপুন, তারপর “Add to Home Screen” চাপলে অ্যাপ হিসেবে যোগ হবে।",
+  checked:n=>`${bn(n)}টি বন্ড যাচাই হয়েছে`, drawsN:n=>`${bn(n)}টি ড্রয়ের সাথে`,
+  wonH:n=>n?"আপনার বন্ড পুরস্কার পেয়েছে":"এবার কোনো পুরস্কার নেই",
+  total:"মোট",draw:n=>`${bn(n)}তম ড্র`,claimBy:d=>`দাবির শেষ তারিখ ${d}`,daysLeft:n=>`আর ${bn(n)} দিন`,expired:"দাবির মেয়াদ শেষ",
+  nowin:"সর্বশেষ ৮টি ড্রয়ে এই নম্বরগুলো পুরস্কার পায়নি। বন্ডগুলো রেখে দিন, প্রতিটি বন্ড প্রতিটি ড্রয়ে অংশ নেয়।",
+  example:"উদাহরণ নম্বর দেখানো হচ্ছে। আপনার নিজের নম্বর দিন।",
+  allChecked:"যাচাই করা সব নম্বর",
+  empty:"অন্তত একটি বন্ড নম্বর দিন।",tooMany:n=>`${bn(n)}টির বেশি বন্ড। তালিকাটি ভাগ করে দিন।`,
+  bad:s=>`বাদ দেওয়া হয়েছে (৭ অঙ্কের নম্বর নয়): ${s}`,
+  next:(n,d)=>`পরবর্তী: ${bn(n)}তম ড্র, ${d}। ঘোষণার পর নম্বর যোগ করা হবে।`,
+  held:d=>`অনুষ্ঠিত ${d}`,claimUntil:d=>`দাবি করা যাবে ${d} পর্যন্ত`,exp:"দাবির মেয়াদ শেষ",
+  each:n=>`${bn(n)}টি নম্বর`,expSoon:n=>`মেয়াদ শেষ হবে ${bn(n)} দিনে`,resultPage:"ফলাফলের পাতা",
+  newH:n=>`নতুন ফলাফল: ${bn(n)}তম ড্র যোগ হয়েছে`,newH2:n=>`আপনার শেষ ভিজিটের পর ${bn(n)}টি নতুন ড্র`,
+  newP:"আপনার সংরক্ষিত বন্ডগুলো নিজে থেকেই মিলিয়ে দেখা হয়েছে। নিচে দেখুন।",
+  share:"শেয়ার করুন",shareSaved:"ছবি সেভ হয়েছে।",shareFail:"ছবি শেয়ার করা যায়নি।",
+  imgWon:"আমি জিতেছি",imgDraw:(n,d)=>`${bn(n)}তম প্রাইজবন্ড ড্র · ${d}`,imgBond:"বন্ড",imgCheck:"বিনামূল্যে যাচাই করেছি",
+  shareText:(a,n)=>`প্রাইজবন্ডের ${bn(n)}তম ড্রয়ে আমি ${a} জিতেছি! প্রাইজবন্ড চেক দিয়ে বিনামূল্যে সব বন্ড মিলিয়ে দেখেছি।`,
+  dh1:n=>`${bn(n)}তম প্রাইজবন্ড ড্র ফলাফল`,
+  dlede:(n,d,f)=>`বাংলাদেশ ব্যাংকের ১০০ টাকা মূল্যমানের প্রাইজবন্ডের ${bn(n)}তম ড্র অনুষ্ঠিত হয় ${d}। ৬,০০,০০০ টাকার প্রথম পুরস্কার পেয়েছে ${bn(f)} নম্বর। নিচে ৪৬টি বিজয়ী নম্বর এবং আপনার সব বন্ড মিলিয়ে দেখার বিনামূল্যের চেকার।`,
+  crumb:"সব ড্রয়ের ফলাফল"}
+};
+let lang="en";
+const L=()=>T[lang];
+const num=x=>lang==="bn"?bn(x):String(x);
+const money=a=>"৳"+num(a.toLocaleString("en-IN"));
+const MONTHS={en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  bn:["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"]};
+function parseD(s){const[y,m,d]=s.split("-").map(Number);return new Date(Date.UTC(y,m-1,d))}
+function fmtD(dt){return lang==="bn"?`${bn(dt.getUTCDate())} ${MONTHS.bn[dt.getUTCMonth()]} ${bn(dt.getUTCFullYear())}`
+  :`${dt.getUTCDate()} ${MONTHS.en[dt.getUTCMonth()]} ${dt.getUTCFullYear()}`}
+function claimDeadline(s){const d=parseD(s);return new Date(Date.UTC(d.getUTCFullYear()+2,d.getUTCMonth(),d.getUTCDate()))}
+function today(){const n=new Date();return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate()))}
+const daysBetween=(a,b)=>Math.round((b-a)/864e5);
+
+/* winning lookup: number -> [{draw, prize}] */
+const WIN=new Map();
+for(const d of DRAWS)for(const p of PRIZES)for(const n of (d[p.k]||[])){
+  if(!WIN.has(n))WIN.set(n,[]);WIN.get(n).push({d,p});
+}
+
+/* ---------- parsing: numbers, runs, joined numbers, "Name: numbers" ---------- */
+const SERIES=/^[ক-হৎড়-য়]{2}$/;   /* two Bangla consonants, e.g. কখ */
+function ownerOf(label){
+  const s=label.trim();
+  if(!s||SERIES.test(s)||!/\p{L}/u.test(s))return null;
+  return s.slice(0,40);
+}
+function parseBonds(text){
+  const t=text.replace(/[০-৯]/g,c=>BN_D.indexOf(c)).replace(/[–—]/g,"-");
+  const out=new Set(),bad=[],owners=new Map();let tooMany=false;
+  const add=(n,o)=>{out.add(n);if(o){if(!owners.has(n))owners.set(n,[]);const a=owners.get(n);if(!a.includes(o))a.push(o)}};
+  for(const line of t.split(/\r?\n/)){
+    let body=line,owner=null;
+    const m0=line.match(/^\s*([^:\d][^:]*?)\s*[:：]\s*(.*)$/);
+    if(m0){const o=ownerOf(m0[1]);if(o){owner=o;body=m0[2]}}
+    const re=/(\d+)\s*[~\-]\s*(\d+)|(\d+)/g;let m;
+    while((m=re.exec(body))){
+      if(m[3]!==undefined){
+        const s=m[3];
+        if(s.length>7){
+          /* numbers typed back to back, e.g. 01111110222222 -> 0111111, 0222222 */
+          if(s.length%7){bad.push(s);continue}
+          for(let i=0;i<s.length;i+=7)add(s.slice(i,i+7),owner);
+        }else add(s.padStart(7,"0"),owner);
+      }else{
+        const a=m[1],b=m[2];
+        if(a.length>7||b.length>7){bad.push(m[0]);continue}
+        let lo=+a,hi=+b;if(lo>hi)[lo,hi]=[hi,lo];
+        if(hi-lo+1>MAX_BONDS){tooMany=true;break}
+        for(let i=lo;i<=hi;i++)add(String(i).padStart(7,"0"),owner);
+      }
+      if(out.size>MAX_BONDS){tooMany=true;break}
+    }
+    if(tooMany)break;
+  }
+  return{nums:[...out].sort(),bad,tooMany,owners};
+}
+
+function check(nums){
+  const hits=[];
+  for(const n of nums){const w=WIN.get(n);if(w)for(const x of w)hits.push({n,...x})}
+  hits.sort((a,b)=>b.d.no-a.d.no||b.p.amt-a.p.amt);
+  return hits;
+}
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let lastHits=new Set(), lastHitList=[], isExample=false, ran=false;
+function store(k,v){try{v===undefined?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+
+function run(){
+  syncKeep();
+  const{nums,bad,tooMany,owners}=parseBonds($("bonds").value);
+  const err=$("err");err.hidden=true;
+  if(tooMany){err.textContent=L().tooMany(MAX_BONDS);err.hidden=false;return}
+  if(!nums.length){err.textContent=L().empty;err.hidden=false;$("results").innerHTML="";lastHits=new Set();lastHitList=[];renderBoard();return}
+  if(bad.length){err.textContent=L().bad(bad.slice(0,5).join(", ")+(bad.length>5?" …":""));err.hidden=false}
+  const hits=check(nums);ran=true;
+  lastHitList=hits;lastHits=new Set(hits.map(h=>h.n));
+  if(!isExample&&DRAWS.length)store("pb-seen",String(DRAWS[0].no));
+  const total=hits.reduce((s,h)=>s+h.p.amt,0);
+  const now=today();
+  let h=`<div class="summary"><h2>${L().wonH(hits.length)}</h2>
+    <span class="stat">${esc(L().checked(nums.length))} ${esc(L().drawsN(DRAWS.length))}</span>
+    ${hits.length?`<span class="stat">${L().total}: <b>${money(total)}</b></span>`:""}</div>`;
+  if(isExample)h+=`<p class="example">${L().example}</p>`;
+  if(hits.length){
+    h+=`<div class="wins">`+hits.map((x,i)=>{
+      const dl=claimDeadline(x.d.date),left=daysBetween(now,dl);
+      const cls=left<0?"gone":left<=90?"soon":"";
+      const dueTxt=left<0?L().expired:`${L().claimBy(fmtD(dl))} · ${L().daysLeft(left)}`;
+      const who=owners.get(x.n);
+      return `<article class="stub"><div class="amt"><span class="tk">${money(x.p.amt)}</span><small>${x.p[lang]}</small></div>
+        <div class="info"><span class="num">${num(x.n)}</span>${who?`<span class="owner">${esc(who.join(", "))}</span>`:""}
+        <span class="meta">${L().draw(x.d.no)} · ${fmtD(parseD(x.d.date))}</span>
+        <span class="due ${cls}">${dueTxt}</span>
+        ${left<0||isExample?"":`<button class="share" type="button" data-share="${i}"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5l5 5M5 13v8h14v-8" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L().share}</button><span class="share-msg" id="shareMsg${i}"></span>`}
+        </div></article>`}).join("")+`</div>`;
+  }else h+=`<p class="nowin">${L().nowin}</p>`;
+  const show=nums.slice(0,600);
+  h+=`<details class="checked"${nums.length<=40?" open":""}><summary>${L().allChecked} (${num(nums.length)})</summary><div class="chips">`+
+    show.map(n=>{const o=owners.get(n);return `<span class="chip${lastHits.has(n)?" win":""}">${num(n)}${o?`<i>${esc(o.join(", "))}</i>`:""}</span>`}).join("")+
+    (nums.length>show.length?`<span class="chip">+${num(nums.length-show.length)}</span>`:"")+`</div></details>`;
+  $("results").innerHTML=h;
+  renderBoard();
+}
+
+/* ---------- draw ledger ---------- */
+let sel=PAGE.draw||(DRAWS.length?DRAWS[0].no:null);
+function renderTabs(){
+  const now=today();
+  $("tabs").innerHTML=DRAWS.map(d=>{
+    const left=daysBetween(now,claimDeadline(d.date));
+    const warn=left>=0&&left<=60?`<span class="x">${L().expSoon(left)}</span>`:left<0?`<span class="x">${L().exp}</span>`:"";
+    return `<button type="button" role="tab" aria-selected="${d.no===sel}" data-no="${d.no}"><b>${num(d.no)}</b>${fmtD(parseD(d.date))}${warn?"<br>"+warn:""}</button>`}).join("");
+}
+function renderBoard(){
+  renderTabs();
+  const d=DRAWS.find(x=>x.no===sel);
+  if(!d){$("board").innerHTML="";return}
+  const dl=claimDeadline(d.date),left=daysBetween(today(),dl);
+  const link=d.no===PAGE.draw?"":` · <a href="${slug(d.no)}">${L().resultPage}</a>`;
+  let h=`<div class="board-meta"><span>${L().draw(d.no)} · ${L().held(fmtD(parseD(d.date)))}${link}</span><span>${left<0?L().exp:L().claimUntil(fmtD(dl))}</span></div>`;
+  for(const p of PRIZES){
+    const ns=d[p.k]||[];
+    h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
+      <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join("")}</div></div>`;
+  }
+  $("board").innerHTML=h;
+}
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-no]");if(!b)return;sel=+b.dataset.no;renderBoard()});
+$("tabs").addEventListener("keydown",e=>{
+  if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;
+  const i=DRAWS.findIndex(d=>d.no===sel),j=Math.max(0,Math.min(DRAWS.length-1,i+(e.key==="ArrowRight"?1:-1)));
+  sel=DRAWS[j].no;renderBoard();$("tabs").querySelector(`[data-no="${sel}"]`)?.focus();
+});
+
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll("[data-i]").forEach(el=>{const v=T[lang][el.dataset.i];if(typeof v==="string")el.textContent=v});
+  document.querySelectorAll("[data-ibn]").forEach(el=>{el.textContent=lang==="bn"?el.dataset.ibn:el.dataset.ien});
+  $("lang-en").setAttribute("aria-pressed",lang==="en");$("lang-bn").setAttribute("aria-pressed",lang==="bn");
+  $("nextDraw").textContent=L().next(NEXT_DRAW.no,fmtD(parseD(NEXT_DRAW.date)));
+  $("serial").textContent=lang==="bn"?"কখ ০০০০০০০":"কখ 0000000";
+  if(PAGE.draw){
+    const d=DRAWS.find(x=>x.no===PAGE.draw);
+    $("dh1").textContent=L().dh1(d.no)+" "+(lang==="bn"?bn(d.date.slice(0,4)):d.date.slice(0,4));
+    $("dlede").textContent=L().dlede(d.no,fmtD(parseD(d.date)),d.first[0]);
+  }
+  document.querySelectorAll("#drawLinks a").forEach(a=>{
+    const d=DRAWS.find(x=>x.no===+a.dataset.no);if(!d)return;
+    a.querySelector("b").textContent=L().draw(d.no);a.querySelector("span").textContent=fmtD(parseD(d.date));
+  });
+  if(newDrawCount)showNewDraw();
+  if(ran)run();else renderBoard();
+}
+$("lang-en").onclick=()=>{lang="en";store("pb-lang","en");applyLang()};
+$("lang-bn").onclick=()=>{lang="bn";store("pb-lang","bn");applyLang()};
+$("form").addEventListener("submit",e=>{e.preventDefault();isExample=false;store("pb-bonds",$("bonds").value);run()});
+$("bonds").addEventListener("input",()=>{isExample=false;store("pb-bonds",$("bonds").value);syncKeep()});
+
+/* ---------- new-draw reminder ---------- */
+let newDrawCount=0;
+function showNewDraw(){
+  $("newDrawH").textContent=newDrawCount===1?L().newH(DRAWS[0].no):L().newH2(newDrawCount);
+  $("newDrawP").textContent=L().newP;$("newDraw").hidden=false;
+}
+
+/* ---------- local scripts (Excel reader, number reader) ---------- */
+const scriptP={};
+function loadScript(src,globalName){
+  if(window[globalName])return Promise.resolve(window[globalName]);
+  if(!scriptP[src])scriptP[src]=new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;
+    s.onload=()=>window[globalName]?res(window[globalName]):rej();s.onerror=()=>{delete scriptP[src];rej()};document.head.appendChild(s)});
+  return scriptP[src];
+}
+const loadXlsx=()=>loadScript("vendor/xlsx.full.min.js","XLSX");
+
+/* ---------- file upload: Excel / CSV / text, read entirely in the browser ---------- */
+/* a numeric Excel cell lost its leading zeros: pad to the next whole bond length */
+function cellText(v){
+  if(v==null||v instanceof Date)return "";
+  if(typeof v==="number"){
+    if(!Number.isInteger(v)||v<0)return "";
+    let s=BigInt(v).toString();
+    if(s.length>7)s=s.padStart(Math.ceil(s.length/7)*7,"0");
+    return s;
+  }
+  return String(v);
+}
+async function fileToText(f){
+  const ext=(f.name.split(".").pop()||"").toLowerCase();
+  if(["csv","txt","tsv"].includes(ext)||f.type.startsWith("text/"))return await f.text();
+  if(!["xlsx","xls","xlsm","ods"].includes(ext))throw{kind:"type"};
+  let X;try{X=await loadXlsx()}catch(e){throw{kind:"lib"}}
+  let wb;try{wb=X.read(await f.arrayBuffer(),{type:"array",cellDates:true})}catch(e){throw{kind:"fail"}}
+  const lines=[];
+  for(const name of wb.SheetNames){
+    const rows=X.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:true,defval:null,blankrows:false});
+    for(const r of rows){
+      const nums=[];let owner=null;
+      for(const c of r){
+        const t=cellText(c).trim();if(!t)continue;
+        if(/\d/.test(t))nums.push(t);
+        else if(!owner){const o=ownerOf(t);if(o)owner=o.replace(/:/g," ")}
+      }
+      if(nums.length)lines.push((owner?owner+": ":"")+nums.join(", "));
+    }
+  }
+  return lines.join("\n");
+}
+function upMsg(text,bad){const m=$("upMsg");m.textContent=text;m.classList.toggle("bad",!!bad);m.hidden=!text}
+function appendBonds(txt){
+  const cur=isExample?"":$("bonds").value.trim();
+  $("bonds").value=(cur?cur+"\n":"")+txt;
+  isExample=false;store("pb-bonds",$("bonds").value);run();
+}
+async function handleFiles(files){
+  files=files.filter(f=>!f.type.startsWith("image/")||(handlePhoto(f),false));
+  if(!files.length)return;
+  upMsg(L().upBusy);
+  let added=[],msgs=[],bad=false;
+  for(const f of files){
+    try{
+      const txt=await fileToText(f);
+      const{nums}=parseBonds(txt);
+      if(!nums.length){msgs.push(L().upNone(f.name));bad=true;continue}
+      added.push(txt);msgs.push(L().upOk(nums.length,f.name));
+    }catch(e){bad=true;msgs.push(e.kind==="type"?L().upType(f.name):e.kind==="lib"?L().upLib:L().upFail(f.name))}
+  }
+  if(added.length)appendBonds(added.join("\n"));
+  upMsg(msgs.join(" "),bad&&!added.length);
+  $("file").value="";
+}
+$("file").addEventListener("change",e=>handleFiles([...e.target.files]));
+const dropZone=$("form");
+["dragenter","dragover"].forEach(ev=>dropZone.addEventListener(ev,e=>{if([...(e.dataTransfer?.types||[])].includes("Files")){e.preventDefault();$("drop").classList.add("over")}}));
+["dragleave","drop"].forEach(ev=>dropZone.addEventListener(ev,e=>{if(ev==="dragleave"&&dropZone.contains(e.relatedTarget))return;$("drop").classList.remove("over")}));
+dropZone.addEventListener("drop",e=>{if(e.dataTransfer?.files?.length){e.preventDefault();handleFiles([...e.dataTransfer.files])}});
+
+/* ---------- camera scan: number reading runs in the browser ---------- */
+const OCR_DIR=new URL("vendor/ocr/",location.href).href;
+let ocrWorker=null,scanJob=0,scanUrl=null;
+async function getOcr(onProg){
+  if(ocrWorker)return ocrWorker;
+  const Tess=await loadScript(OCR_DIR+"tesseract.min.js","Tesseract");
+  /* language data ships as base64 text so any static host serves it. It is put where the
+     reader looks for its cache (IndexedDB "keyval-store"), so it downloads only once. */
+  const db=await new Promise((res,rej)=>{const q=indexedDB.open("keyval-store");q.onupgradeneeded=()=>q.result.createObjectStore("keyval");q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+  const idb=(mode,fn)=>new Promise((res,rej)=>{const t=db.transaction("keyval",mode);const r=fn(t.objectStore("keyval"));t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error)});
+  for(const code of ["eng","ben"]){
+    const key=`./${code}.traineddata`;
+    if(await idb("readonly",s=>s.get(key))!==undefined)continue;
+    const r=await fetch(OCR_DIR+code+".traineddata.b64.txt");if(!r.ok)throw new Error("lang");
+    const bin=atob((await r.text()).trim()),u=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    await idb("readwrite",s=>s.put(u,key));
+  }
+  db.close();
+  ocrWorker=await Tess.createWorker(["eng","ben"],1,{
+    workerPath:OCR_DIR+"worker.min.js",corePath:OCR_DIR,langPath:OCR_DIR,
+    logger:m=>{if(m.status==="recognizing text")onProg(m.progress)}
+  });
+  await ocrWorker.setParameters({tessedit_char_whitelist:"0123456789০১২৩৪৫৬৭৮৯ "});
+  return ocrWorker;
+}
+let ocrProg=()=>{};
+function prepImage(img){
+  /* scale up small photos, grayscale and stretch contrast so printed digits stand out */
+  const max=2400,min=1400;
+  let w=img.naturalWidth,h=img.naturalHeight;
+  const k=Math.max(w,h)>max?max/Math.max(w,h):Math.max(w,h)<min?min/Math.max(w,h):1;
+  w=Math.round(w*k);h=Math.round(h*k);
+  const c=document.createElement("canvas");c.width=w;c.height=h;
+  const g=c.getContext("2d");g.drawImage(img,0,0,w,h);
+  const px=g.getImageData(0,0,w,h),a=px.data;let lo=255,hi=0;
+  for(let i=0;i<a.length;i+=4){const v=(a[i]*.3+a[i+1]*.59+a[i+2]*.11)|0;a[i]=v;if(v<lo)lo=v;if(v>hi)hi=v}
+  const r=Math.max(1,hi-lo);
+  for(let i=0;i<a.length;i+=4){const v=Math.min(255,Math.max(0,(a[i]-lo)*255/r));a[i]=a[i+1]=a[i+2]=v}
+  g.putImageData(px,0,0);return c;
+}
+function numbersFromText(text){
+  const t=text.replace(/[০-৯]/g,c=>BN_D.indexOf(c));
+  const found=[];
+  for(const line of t.split(/\n/)){
+    for(const run of line.replace(/(\d)\s(?=\d)/g,"$1").match(/\d+/g)||[]){
+      if(run.length%7===0)for(let i=0;i<run.length;i+=7)found.push(run.slice(i,i+7));
+    }
+  }
+  return [...new Set(found)];
+}
+function scanUI(state,extra){
+  $("scan").hidden=false;
+  const busy=state==="load"||state==="read";
+  $("scanBar").hidden=!busy;$("scanNums").hidden=state!=="done";$("scanTip").hidden=state!=="done";$("scanAdd").hidden=state!=="done";
+  if(state==="load"){$("scanH").textContent=L().scanH;$("scanStatus").textContent=L().scanLoad;$("scanProg").style.width="4%"}
+  if(state==="read"){$("scanH").textContent=L().scanH;$("scanStatus").textContent=L().scanRead(Math.round(extra*100));$("scanProg").style.width=Math.max(4,extra*100)+"%"}
+  if(state==="done"){$("scanH").textContent=L().scanFound(extra);$("scanStatus").textContent=""}
+  if(state==="none"){$("scanH").textContent=L().scanNone;$("scanStatus").textContent=L().scanNoneP}
+  if(state==="fail"){$("scanH").textContent=L().scanNone;$("scanStatus").textContent=L().scanFail}
+}
+async function handlePhoto(f){
+  const job=++scanJob;
+  if(scanUrl)URL.revokeObjectURL(scanUrl);
+  scanUrl=URL.createObjectURL(f);$("scanImg").src=scanUrl;
+  scanUI("load");$("scan").scrollIntoView({block:"nearest",behavior:"smooth"});
+  try{
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=scanUrl});
+    ocrProg=p=>{if(job===scanJob)scanUI("read",p)};
+    const w=await getOcr(p=>ocrProg(p));
+    if(job!==scanJob)return;
+    scanUI("read",0);
+    const{data}=await w.recognize(prepImage(img));
+    if(job!==scanJob)return;
+    const nums=numbersFromText(data.text||"");
+    if(!nums.length){scanUI("none");return}
+    $("scanNums").value=nums.join("\n");scanUI("done",nums.length);
+  }catch(e){if(job===scanJob)scanUI("fail")}
+}
+$("photo").addEventListener("change",e=>{const f=e.target.files[0];if(f)handlePhoto(f);e.target.value=""});
+$("scanCancel").onclick=()=>{scanJob++;$("scan").hidden=true};
+$("scanAdd").onclick=()=>{
+  const txt=$("scanNums").value.trim();const n=parseBonds(txt).nums.length;
+  $("scan").hidden=true;if(!n)return;appendBonds(txt);upMsg(L().scanAdded(n));
+};
+
+/* ---------- downloads: claude.ai viewer capability, or a normal browser download ---------- */
+const dlCap=(window.claude&&typeof window.claude.use==="function")?window.claude.use("downloads").catch(()=>null):Promise.resolve(null);
+async function saveFile(name,data,mime){
+  const dl=await dlCap;
+  if(dl){await dl.save({filename:name,data});return}
+  const url=URL.createObjectURL(data instanceof Blob?data:new Blob([data],{type:mime}));
+  const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+
+/* ---------- Excel sheet of the user's bonds ---------- */
+function syncKeep(){$("keep").hidden=isExample||!parseBonds($("bonds").value).nums.length}
+function keepMsg(t,bad){const m=$("keepMsg");m.textContent=t;m.classList.toggle("bad",!!bad);m.hidden=!t}
+async function makeSheet(nums,owners){
+  const X=await loadXlsx();
+  const named=owners.size>0;
+  const ws=X.utils.aoa_to_sheet(nums.map(n=>named?[n,(owners.get(n)||[]).join(", ")]:[n]));
+  for(let i=0;i<nums.length;i++){const c=ws["A"+(i+1)];c.t="s";c.z="@"}  /* text cells keep leading zeros */
+  ws["!cols"]=named?[{wch:12},{wch:18}]:[{wch:12}];
+  const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,"Bonds");
+  return new Uint8Array(X.write(wb,{bookType:"xlsx",type:"array"}));
+}
+$("dlSheet").onclick=async()=>{
+  const{nums,owners}=parseBonds($("bonds").value);if(!nums.length)return;
+  keepMsg(L().keepBusy);
+  let data;try{data=await makeSheet(nums,owners)}catch(e){keepMsg(L().keepFail,true);return}
+  try{await saveFile("my-prize-bonds.xlsx",data,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");keepMsg(L().keepOk(nums.length))}
+  catch(e){keepMsg(e&&e.code==="declined"?L().keepNo:L().keepFail,!(e&&e.code==="declined"))}
+};
+
+/* ---------- share a win as a picture ---------- */
+function siteHost(){const h=location.hostname;return /^(https?:)$/.test(location.protocol)&&h&&!/claude|anthropic|localhost/.test(h)?h:""}
+async function winImage(x){
+  try{await Promise.all([document.fonts.load("64px 'Tiro Bangla'"),document.fonts.load("600 40px 'IBM Plex Mono'"),document.fonts.load("500 30px 'Hind Siliguri'")])}catch(e){}
+  const S=1080,c=document.createElement("canvas");c.width=c.height=S;const g=c.getContext("2d");
+  g.fillStyle="#0b6b4f";g.fillRect(0,0,S,S);
+  g.strokeStyle="rgba(255,255,255,.07)";g.lineWidth=2;
+  for(let r=40;r<1500;r+=22){g.beginPath();g.arc(S,0,r,0,Math.PI*2);g.stroke();g.beginPath();g.arc(0,S,r,0,Math.PI*2);g.stroke()}
+  g.fillStyle="#fbfcf8";g.fillRect(70,70,S-140,S-140);
+  g.strokeStyle="#0b6b4f";g.lineWidth=3;g.strokeRect(92,92,S-184,S-184);
+  g.textAlign="center";g.textBaseline="alphabetic";
+  const bnL=lang==="bn",disp="'Tiro Bangla',Georgia,serif",mono="'IBM Plex Mono',monospace",body="'Hind Siliguri',sans-serif";
+  g.fillStyle="#0b6b4f";g.font=`64px ${disp}`;g.fillText(L().imgWon,S/2,250);
+  g.fillStyle="#c2283a";g.font=`600 150px ${mono}`;
+  const amt=money(x.p.amt);let fs=150;while(g.measureText(amt).width>S-260&&fs>60){fs-=6;g.font=`600 ${fs}px ${mono}`}
+  g.fillText(amt,S/2,450);
+  g.fillStyle="#16261f";g.font=`40px ${disp}`;g.fillText(x.p[lang],S/2,540);
+  g.fillStyle="#5a6b62";g.font=`500 34px ${body}`;g.fillText(L().imgDraw(x.d.no,fmtD(parseD(x.d.date))),S/2,610);
+  const masked="••••"+x.n.slice(4);
+  g.font=`600 40px ${mono}`;g.fillStyle="#16261f";g.fillText(`${L().imgBond} ${num(masked)}`,S/2,690);
+  g.strokeStyle="#cdd7cf";g.lineWidth=2;g.setLineDash([10,8]);g.beginPath();g.moveTo(160,770);g.lineTo(S-160,770);g.stroke();g.setLineDash([]);
+  g.fillStyle="#5a6b62";g.font=`500 30px ${body}`;g.fillText(L().imgCheck,S/2,840);
+  g.fillStyle="#0b6b4f";g.font=`44px ${disp}`;g.fillText(siteHost()||L().brand,S/2,905);
+  return await new Promise(r=>c.toBlob(r,"image/png"));
+}
+$("results").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-share]");if(!b)return;
+  const i=+b.dataset.share,x=lastHitList[i];if(!x)return;
+  const msg=$("shareMsg"+i);msg.textContent="";b.disabled=true;
+  try{
+    const blob=await winImage(x);
+    const file=new File([blob],"prize-bond-win.png",{type:"image/png"});
+    const host=siteHost();
+    const text=L().shareText(money(x.p.amt),x.d.no)+(host?" "+location.origin+location.pathname.replace(/[^/]*$/,""):"");
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],text});}catch(err){if(err&&err.name==="AbortError")return;throw err}
+    }else{await saveFile("prize-bond-win.png",blob,"image/png");msg.textContent=L().shareSaved}
+  }catch(err){if(!(err&&err.code==="declined"))msg.textContent=L().shareFail}
+  finally{b.disabled=false}
+});
+
+/* ---------- install as an app ---------- */
+let installEvt=null;
+const standaloneMode=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude|anthropic/.test(location.hostname)){
+  navigator.serviceWorker.register("sw.js").then(()=>{
+    if(!standaloneMode&&/iphone|ipad|ipod/i.test(navigator.userAgent))$("iosTip").hidden=false;
+  }).catch(()=>{});
+}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvt=e;$("installBtn").hidden=false});
+$("installBtn").onclick=async()=>{if(!installEvt)return;installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;$("installBtn").hidden=true};
+addEventListener("appinstalled",()=>{$("installBtn").hidden=true});
+
+$("clear").onclick=()=>{upMsg("");keepMsg("");$("bonds").value="";store("pb-bonds");$("results").innerHTML="";$("err").hidden=true;lastHits=new Set();lastHitList=[];ran=false;isExample=false;renderBoard();syncKeep();$("bonds").focus()};
+
+(function init(){
+  const l=load("pb-lang");if(l==="bn"||l==="en")lang=l;
+  const saved=load("pb-bonds");
+  if(saved&&saved.trim()){
+    $("bonds").value=saved;
+    const seen=+load("pb-seen")||0;
+    if(seen&&DRAWS.length&&DRAWS[0].no>seen)newDrawCount=DRAWS.filter(d=>d.no>seen).length;
+  }else{$("bonds").value=EXAMPLE;isExample=true}
+  applyLang();run();
+})();
+</script>
