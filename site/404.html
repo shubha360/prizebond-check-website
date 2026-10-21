@@ -552,7 +552,7 @@ function run(){
   }else h+=`<p class="nowin">${L().nowin}</p>`;
   const show=nums.slice(0,600);
   h+=`<details class="checked"${nums.length<=40?" open":""}><summary>${L().allChecked} (${num(nums.length)})</summary><div class="chips">`+
-    show.map(n=>{const o=owners.get(n);return `<span class="chip${lastHits.has(n)?" win":""}">${num(n)}${o?`<i>${esc(o.join(", "))}</i>`:""}</span>`}).join("")+
+    show.map(n=>{const o=owners.get(n);return `<span class="chip${lastHits.has(n)?" win":""}">${num(n)}${o?`<i>${esc(o.join(", "))}</i>`:""}</span>`}).join(" ")+
     (nums.length>show.length?`<span class="chip">+${num(nums.length-show.length)}</span>`:"")+`</div></details>`;
   $("results").innerHTML=h;
   renderBoard();
@@ -577,7 +577,7 @@ function renderBoard(){
   for(const p of PRIZES){
     const ns=d[p.k]||[];
     h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
-      <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join("")}</div></div>`;
+      <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join(" ")}</div></div>`;
   }
   $("board").innerHTML=h;
 }

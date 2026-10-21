@@ -261,9 +261,9 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
 <div class="board-meta"><span>121st draw · Held 31 Oct 2025</span><span>Claimable until 31 Oct 2027</span></div>
 <div class="tier big"><div class="t">1st prize<b>৳6,00,000</b></div><div class="nums"><span>0108331</span></div></div>
 <div class="tier big"><div class="t">2nd prize<b>৳3,25,000</b></div><div class="nums"><span>0156897</span></div></div>
-<div class="tier big"><div class="t">3rd prize<b>৳1,00,000</b></div><div class="nums"><span>0056362</span><span>0453668</span></div></div>
-<div class="tier"><div class="t">4th prize<b>৳50,000</b></div><div class="nums"><span>0912444</span><span>0983572</span></div></div>
-<div class="tier"><div class="t">5th prize<b>৳10,000</b><span>40 numbers</span></div><div class="nums"><span>0013386</span><span>0014992</span><span>0028183</span><span>0053226</span><span>0119069</span><span>0168873</span><span>0244074</span><span>0257594</span><span>0265938</span><span>0292941</span><span>0296429</span><span>0327910</span><span>0340407</span><span>0349315</span><span>0355206</span><span>0367529</span><span>0369117</span><span>0417728</span><span>0425683</span><span>0501043</span><span>0515542</span><span>0549521</span><span>0565936</span><span>0602265</span><span>0620259</span><span>0624718</span><span>0674344</span><span>0712740</span><span>0759059</span><span>0769392</span><span>0782728</span><span>0791428</span><span>0799732</span><span>0821677</span><span>0865122</span><span>0903392</span><span>0904352</span><span>0922180</span><span>0936617</span><span>0985952</span></div></div>
+<div class="tier big"><div class="t">3rd prize<b>৳1,00,000</b></div><div class="nums"><span>0056362</span> <span>0453668</span></div></div>
+<div class="tier"><div class="t">4th prize<b>৳50,000</b></div><div class="nums"><span>0912444</span> <span>0983572</span></div></div>
+<div class="tier"><div class="t">5th prize<b>৳10,000</b><span>40 numbers</span></div><div class="nums"><span>0013386</span> <span>0014992</span> <span>0028183</span> <span>0053226</span> <span>0119069</span> <span>0168873</span> <span>0244074</span> <span>0257594</span> <span>0265938</span> <span>0292941</span> <span>0296429</span> <span>0327910</span> <span>0340407</span> <span>0349315</span> <span>0355206</span> <span>0367529</span> <span>0369117</span> <span>0417728</span> <span>0425683</span> <span>0501043</span> <span>0515542</span> <span>0549521</span> <span>0565936</span> <span>0602265</span> <span>0620259</span> <span>0624718</span> <span>0674344</span> <span>0712740</span> <span>0759059</span> <span>0769392</span> <span>0782728</span> <span>0791428</span> <span>0799732</span> <span>0821677</span> <span>0865122</span> <span>0903392</span> <span>0904352</span> <span>0922180</span> <span>0936617</span> <span>0985952</span></div></div>
 
     </div>
   </section>
@@ -595,7 +595,7 @@ function run(){
   }else h+=`<p class="nowin">${L().nowin}</p>`;
   const show=nums.slice(0,600);
   h+=`<details class="checked"${nums.length<=40?" open":""}><summary>${L().allChecked} (${num(nums.length)})</summary><div class="chips">`+
-    show.map(n=>{const o=owners.get(n);return `<span class="chip${lastHits.has(n)?" win":""}">${num(n)}${o?`<i>${esc(o.join(", "))}</i>`:""}</span>`}).join("")+
+    show.map(n=>{const o=owners.get(n);return `<span class="chip${lastHits.has(n)?" win":""}">${num(n)}${o?`<i>${esc(o.join(", "))}</i>`:""}</span>`}).join(" ")+
     (nums.length>show.length?`<span class="chip">+${num(nums.length-show.length)}</span>`:"")+`</div></details>`;
   $("results").innerHTML=h;
   renderBoard();
@@ -620,7 +620,7 @@ function renderBoard(){
   for(const p of PRIZES){
     const ns=d[p.k]||[];
     h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
-      <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join("")}</div></div>`;
+      <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join(" ")}</div></div>`;
   }
   $("board").innerHTML=h;
 }
