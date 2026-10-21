@@ -2,3 +2,5 @@
 artifact/
 site.zip
 __pycache__/
+.wrangler/
+node_modules/
