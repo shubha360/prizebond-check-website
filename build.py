@@ -14,7 +14,7 @@ import datetime, hashlib, html, json, pathlib, re, shutil, sys, zipfile
 SITE_URL = "https://checkprizebond.com"          # e.g. "https://prizebondcheck.com" (no trailing slash)
 SITE_NAME = "PrizeBond Check"
 SITE_NAME_BN = "প্রাইজবন্ড চেক"
-ANALYTICS_TOKEN = ""   # Cloudflare Web Analytics token (cookie-free visitor counter); empty = off
+ANALYTICS_TOKEN = "a5a9b171f69542cdb5b20b2a594d4f23"   # Cloudflare Web Analytics token (cookie-free visitor counter); empty = off
 
 HERE = pathlib.Path(__file__).parent
 TIERS = {"first": 1, "second": 1, "third": 2, "fourth": 2, "fifth": 40}
