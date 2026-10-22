@@ -14,6 +14,7 @@ import datetime, hashlib, html, json, pathlib, re, shutil, sys, zipfile
 SITE_URL = "https://checkprizebond.com"          # e.g. "https://prizebondcheck.com" (no trailing slash)
 SITE_NAME = "PrizeBond Check"
 SITE_NAME_BN = "প্রাইজবন্ড চেক"
+REPO_URL = "https://github.com/shubha360/prizebond-check-website"   # public source code, linked from every page
 ANALYTICS_TOKEN = "a5a9b171f69542cdb5b20b2a594d4f23"   # Cloudflare Web Analytics token (cookie-free visitor counter); empty = off
 
 HERE = pathlib.Path(__file__).parent
@@ -117,8 +118,11 @@ FAQ = [
   "Every bond sold at least 2 months before the draw date. A bond keeps taking part in every draw after that.",
   "ড্রয়ের তারিখের অন্তত ২ মাস আগে বিক্রি হওয়া সব বন্ড। এরপর থেকে প্রতিটি ড্রয়ে বন্ডটি অংশ নেয়।"),
  ("Is it safe to enter my bond numbers here?", "এখানে বন্ড নম্বর দেওয়া কি নিরাপদ?",
-  "Yes. Your numbers are checked inside your own browser and saved only on your device. Nothing is sent to a server.",
-  "হ্যাঁ। নম্বরগুলো আপনার ব্রাউজারেই মেলানো হয় এবং শুধু আপনার ডিভাইসে সংরক্ষিত থাকে। কোনো সার্ভারে পাঠানো হয় না।"),
+  "Yes. Your numbers are checked inside your own browser and saved only on your device; Clear removes them. They are never sent to any server, so this site has no list of who holds which bond, and nobody can get one from us. The code is public on GitHub for anyone to check.",
+  "হ্যাঁ। নম্বরগুলো আপনার ব্রাউজারেই মেলানো হয় এবং শুধু আপনার ডিভাইসে সংরক্ষিত থাকে; মুছুন চাপলে মুছে যায়। কোনো সার্ভারে কখনো পাঠানো হয় না, তাই কার কাছে কোন বন্ড আছে তার কোনো তালিকা এই সাইটের কাছে নেই, আমাদের কাছ থেকে কেউ তা পেতেও পারে না। যে কেউ যাচাই করতে পারেন, কোড GitHub-এ উন্মুক্ত।"),
+ ("Someone called offering to buy my winning bond. What should I do?", "কেউ ফোন করে আমার পুরস্কারপ্রাপ্ত বন্ড কিনতে চাইছে। কী করব?",
+  "Say no, and don't hand over the bond. Claim the prize yourself at Bangladesh Bank or where you bought the bond; it's your money. This site never contacts anyone and doesn't know who won, so such calls don't come from us.",
+  "রাজি হবেন না, বন্ড কাউকে দেবেন না। বাংলাদেশ ব্যাংকে বা যেখান থেকে বন্ড কিনেছেন সেখানে নিজেই পুরস্কার দাবি করুন; টাকাটা আপনার। এই সাইট কারো সাথে যোগাযোগ করে না এবং কে জিতেছে তা জানেও না, তাই এমন ফোন আমাদের কাছ থেকে আসে না।"),
 ]
 def faq_html():
     items = "\n".join(f"      <div>{bi('dt', q, qb)}{bi('dd', a, ab)}</div>" for q, qb, a, ab in FAQ)
@@ -151,7 +155,7 @@ def page(intro, order, page_draw, board_draw, faq, head_html, home, ext="", curr
     s = s.replace("<!--SECTION:links-->", links(page_draw, ext))
     s = s.replace("<!--SECTION:faq-->", faq)
     s = s.replace("/*__DRAWS__*/[]", DATA)
-    s = s.replace("__EXT__", ext)
+    s = s.replace("__EXT__", ext).replace("__REPO__", REPO_URL)
     s = s.replace("/*__PAGE__*/{draw:null,ext:\"\"}", json.dumps({"draw": page_draw, "home": home, "ext": ext}))
     assert "<!--" not in s.replace("<!--HEAD-->", ""), "unfilled placeholder"
     return s

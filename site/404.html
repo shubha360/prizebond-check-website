@@ -46,6 +46,14 @@ button,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .vh{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
 
+/* privacy notice */
+.privacy{display:flex;gap:12px;align-items:flex-start;background:var(--green-soft);border:1px solid var(--green);border-radius:6px;padding:12px 14px}
+.privacy-ic{flex:none;color:var(--green);margin-top:1px}
+.privacy-txt{display:flex;flex-direction:column;gap:3px;min-width:0;font-size:14px;line-height:1.5}
+.privacy-txt b{font-size:15px;font-weight:600}
+.privacy-txt span{color:var(--muted)}
+.privacy-txt a{font-weight:500;align-self:flex-start}
+
 /* header */
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:20px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
@@ -289,6 +297,15 @@ var n=cur()==="dark"?"light":"dark";d.dataset.theme=n;try{localStorage.setItem("
     </div>
   </header>
 
+  <aside class="privacy" aria-label="Privacy">
+    <svg class="privacy-ic" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8 3v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10v-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4 4.6-4.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="privacy-txt">
+      <b data-ien="Your bond numbers never leave your phone or computer." data-ibn="আপনার বন্ড নম্বর আপনার ফোন বা কম্পিউটারের বাইরে কোথাও যায় না।">Your bond numbers never leave your phone or computer.</b>
+      <span data-ien="This site doesn't store, collect or see any bond numbers or personal details, and nobody from this site will ever contact you. If anyone offers you cash for a winning bond, say no and claim it yourself." data-ibn="এই সাইট কোনো বন্ড নম্বর বা ব্যক্তিগত তথ্য সংরক্ষণ বা সংগ্রহ করে না, দেখতেও পায় না, আর এই সাইট থেকে কেউ কখনো আপনার সাথে যোগাযোগ করবে না। কেউ পুরস্কারপ্রাপ্ত বন্ডের বিনিময়ে নগদ টাকা দিতে চাইলে রাজি হবেন না, নিজেই দাবি করুন।">This site doesn't store, collect or see any bond numbers or personal details, and nobody from this site will ever contact you. If anyone offers you cash for a winning bond, say no and claim it yourself.</span>
+      <a href="https://github.com/shubha360/prizebond-check-website" target="_blank" rel="noopener" data-ien="Check the code yourself on GitHub" data-ibn="GitHub-এ কোড নিজেই দেখে নিন">Check the code yourself on GitHub</a>
+    </div>
+  </aside>
+
   <section class="intro">
     <h1>Page not found</h1>
     <p class="sub" data-ien="This page doesn't exist" data-ibn="এই পাতাটি নেই">This page doesn't exist</p>
@@ -402,6 +419,7 @@ var n=cur()==="dark"?"light":"dark";d.dataset.theme=n;try{localStorage.setItem("
   <footer>
     <p data-i="foot1">Results compiled from Bangladesh Bank announcements and national newspapers. Always confirm a win with Bangladesh Bank before you travel to claim it.</p>
     <p data-i="foot2">PrizeBond Check is free and not affiliated with Bangladesh Bank.</p>
+    <p><span data-ien="Open source: anyone can read the code." data-ibn="ওপেন সোর্স: যে কেউ কোড পড়ে দেখতে পারেন।">Open source: anyone can read the code.</span> <a href="https://github.com/shubha360/prizebond-check-website" target="_blank" rel="noopener">GitHub</a></p>
     <p class="ios-tip" id="iosTip" hidden data-i="iosTip">On iPhone: tap Share, then "Add to Home Screen" to install this as an app.</p>
   </footer>
 </div>
