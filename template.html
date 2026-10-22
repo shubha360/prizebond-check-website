@@ -49,6 +49,11 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .lang{display:flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden}
 .lang button{background:none;border:0;padding:5px 12px;cursor:pointer;font-size:14px;color:var(--muted)}
 .lang button[aria-pressed="true"]{background:var(--green);color:var(--sheet)}
+.theme-btn{background:none;border:1px solid var(--rule);color:var(--ink);border-radius:999px;width:32px;height:32px;padding:0;display:inline-grid;place-items:center;cursor:pointer}
+.theme-btn:hover{border-color:var(--muted)}
+.theme-btn .i-sun{display:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .theme-btn .i-sun{display:block}:root:not([data-theme="light"]) .theme-btn .i-moon{display:none}}
+:root[data-theme="dark"] .theme-btn .i-sun{display:block}:root[data-theme="dark"] .theme-btn .i-moon{display:none}
 .install{background:none;border:1px solid var(--green);color:var(--green);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:14px;display:inline-flex;gap:6px;align-items:center}
 
 .intro{display:flex;flex-direction:column;gap:8px;max-width:64ch}
@@ -182,7 +187,7 @@ details.checked summary{cursor:pointer;color:var(--muted);font-size:14px;margin-
 .tier .t b{display:block;font-family:var(--mono);font-weight:600}
 .tier .t span{display:block;color:var(--muted);font-size:13px}
 .tier .nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums}
-.tier.big .nums{font-size:19px;color:var(--seal);font-weight:600}
+.tier.big .nums{font-size:19px;font-weight:600}
 .tier .nums .hit{background:var(--seal);color:var(--sheet);border-radius:3px;padding:0 4px}
 
 /* draw links, faq */
@@ -251,12 +256,22 @@ footer{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);paddin
   @keyframes pop{from{transform:translateY(6px)}to{transform:none}}
 }
 </style>
+<script>
+/* dark/light switch: remembers the visitor's choice; with no choice the device setting decides */
+(function(){var d=document.documentElement;
+try{var t=localStorage.getItem("pb-theme");if(t==="dark"||t==="light")d.dataset.theme=t}catch(e){}
+function cur(){return d.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#themeBtn");if(!b)return;
+var n=cur()==="dark"?"light":"dark";d.dataset.theme=n;try{localStorage.setItem("pb-theme",n)}catch(e){}});
+})();
+</script>
 
 <div class="wrap">
   <header class="top">
     <a class="brand" href="./"><span class="mark">৳</span><b data-i="brand">PrizeBond Check</b></a>
     <div class="top-r">
       <button class="install" id="installBtn" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2"/></svg><span data-i="install">Install app</span></button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Dark or light mode · ডার্ক বা লাইট মোড" title="Dark / light · ডার্ক / লাইট"><svg class="i-moon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <div class="lang" role="group" aria-label="Language">
         <button id="lang-en" type="button" aria-pressed="true">English</button>
         <button id="lang-bn" type="button" aria-pressed="false">বাংলা</button>
