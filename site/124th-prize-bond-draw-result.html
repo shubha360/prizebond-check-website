@@ -324,7 +324,7 @@ var n=cur()==="dark"?"light":"dark";d.dataset.theme=n;try{localStorage.setItem("
 <div class="tier big"><div class="t">1st prize<b>৳6,00,000</b></div><div class="nums"><span>0786345</span></div></div>
 <div class="tier big"><div class="t">2nd prize<b>৳3,25,000</b></div><div class="nums"><span>0911829</span></div></div>
 <div class="tier big"><div class="t">3rd prize<b>৳1,00,000</b></div><div class="nums"><span>0486181</span> <span>0700725</span></div></div>
-<div class="tier"><div class="t">4th prize<b>৳50,000</b></div><div class="nums"><span>0101571</span> <span>0677548</span></div></div>
+<div class="tier big"><div class="t">4th prize<b>৳50,000</b></div><div class="nums"><span>0101571</span> <span>0677548</span></div></div>
 <div class="tier"><div class="t">5th prize<b>৳10,000</b><span>40 numbers</span></div><div class="nums"><span>0050418</span> <span>0115181</span> <span>0139380</span> <span>0146127</span> <span>0152480</span> <span>0185648</span> <span>0293525</span> <span>0307909</span> <span>0311203</span> <span>0393187</span> <span>0454894</span> <span>0483646</span> <span>0505976</span> <span>0534811</span> <span>0542962</span> <span>0544707</span> <span>0559958</span> <span>0588156</span> <span>0605926</span> <span>0654415</span> <span>0669021</span> <span>0706178</span> <span>0740194</span> <span>0758869</span> <span>0760359</span> <span>0775152</span> <span>0808651</span> <span>0825345</span> <span>0842904</span> <span>0870417</span> <span>0878442</span> <span>0891209</span> <span>0900788</span> <span>0912209</span> <span>0924656</span> <span>0946563</span> <span>0952827</span> <span>0967420</span> <span>0970749</span> <span>0979041</span></div></div>
 
     </div>
@@ -693,7 +693,7 @@ function renderBoard(){
   let h=`<div class="board-meta"><span>${L().draw(d.no)} · ${L().held(fmtD(parseD(d.date)))}${link}</span><span>${left<0?L().exp:L().claimUntil(fmtD(dl))}</span></div>`;
   for(const p of PRIZES){
     const ns=d[p.k]||[];
-    h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
+    h+=`<div class="tier${p.amt>=50000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
       <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join(" ")}</div></div>`;
   }
   h+=`<div class="board-dl"><button class="ghost" type="button" data-dl="${d.no}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L().dlDraw}</button><span id="dlDrawMsg"></span></div>`;

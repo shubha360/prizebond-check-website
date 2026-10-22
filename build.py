@@ -75,7 +75,7 @@ def static_board(d, page_draw, ext):
     for k, amt, name in PRIZES:
         ns = d[k]
         each = f"<span>{len(ns)} numbers</span>" if len(ns) > 2 else ""
-        h += (f'<div class="tier{" big" if amt >= 100000 else ""}"><div class="t">{name}<b>{money(amt)}</b>{each}</div>'
+        h += (f'<div class="tier{" big" if amt >= 50000 else ""}"><div class="t">{name}<b>{money(amt)}</b>{each}</div>'
               f'<div class="nums">{" ".join(f"<span>{n}</span>" for n in ns)}</div></div>\n')
     return h
 

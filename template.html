@@ -652,7 +652,7 @@ function renderBoard(){
   let h=`<div class="board-meta"><span>${L().draw(d.no)} · ${L().held(fmtD(parseD(d.date)))}${link}</span><span>${left<0?L().exp:L().claimUntil(fmtD(dl))}</span></div>`;
   for(const p of PRIZES){
     const ns=d[p.k]||[];
-    h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
+    h+=`<div class="tier${p.amt>=50000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
       <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join(" ")}</div></div>`;
   }
   h+=`<div class="board-dl"><button class="ghost" type="button" data-dl="${d.no}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L().dlDraw}</button><span id="dlDrawMsg"></span></div>`;
