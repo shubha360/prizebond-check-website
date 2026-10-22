@@ -173,6 +173,10 @@ details.checked summary{cursor:pointer;color:var(--muted);font-size:14px;margin-
 .tabs button .x{font-size:11px;color:var(--seal)}
 .board{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px}
 .board-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:14px;color:var(--muted)}
+.board-dl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:12px}
+.board-dl button{display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
+.board-dl button svg{color:var(--green)}
+.board-dl span{font-size:13px;color:var(--muted)}
 .tier{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:start;border-top:1px solid var(--rule);padding-top:12px}
 .tier .t{font-size:14px}
 .tier .t b{display:block;font-family:var(--mono);font-weight:600}
@@ -451,7 +455,7 @@ const T = {
   bad:s=>`Skipped (not a 7-digit bond number): ${s}`,
   next:(n,d)=>`Next: ${ordinal(n)} draw, ${d}. Numbers are added after it's announced.`,
   held:d=>`Held ${d}`,claimUntil:d=>`Claimable until ${d}`,exp:"Claim period over",
-  each:n=>`${n} numbers`,expSoon:n=>`expires in ${n} days`,resultPage:"Result page",
+  each:n=>`${n} numbers`,dlDraw:"Download these numbers (Excel)",dlDrawOk:f=>`Saved as ${f}.`,xlTitle:(n,d)=>`${ordinal(n)} prize bond draw, held ${d}`,xlPrize:"Prize",xlAmount:"Amount (Tk)",xlNumber:"Winning number",xlYours:"Your bond?",xlYes:"Yes",expSoon:n=>`expires in ${n} days`,resultPage:"Result page",
   newH:n=>`New result: the ${ordinal(n)} draw is in`,newH2:n=>`${n} new draws since your last visit`,
   newP:"Your saved bonds were checked automatically. See below.",
   share:"Share",shareSaved:"Picture saved.",shareFail:"Couldn't share the picture.",
@@ -498,7 +502,7 @@ const T = {
   bad:s=>`বাদ দেওয়া হয়েছে (৭ অঙ্কের নম্বর নয়): ${s}`,
   next:(n,d)=>`পরবর্তী: ${bn(n)}তম ড্র, ${d}। ঘোষণার পর নম্বর যোগ করা হবে।`,
   held:d=>`অনুষ্ঠিত ${d}`,claimUntil:d=>`দাবি করা যাবে ${d} পর্যন্ত`,exp:"দাবির মেয়াদ শেষ",
-  each:n=>`${bn(n)}টি নম্বর`,expSoon:n=>`মেয়াদ শেষ হবে ${bn(n)} দিনে`,resultPage:"ফলাফলের পাতা",
+  each:n=>`${bn(n)}টি নম্বর`,dlDraw:"এই নম্বরগুলো ডাউনলোড করুন (এক্সেল)",dlDrawOk:f=>`${f} হিসেবে সেভ হয়েছে।`,xlTitle:(n,d)=>`${bn(n)}তম প্রাইজবন্ড ড্র, অনুষ্ঠিত ${d}`,xlPrize:"পুরস্কার",xlAmount:"পরিমাণ (টাকা)",xlNumber:"বিজয়ী নম্বর",xlYours:"আপনার বন্ড?",xlYes:"হ্যাঁ",expSoon:n=>`মেয়াদ শেষ হবে ${bn(n)} দিনে`,resultPage:"ফলাফলের পাতা",
   newH:n=>`নতুন ফলাফল: ${bn(n)}তম ড্র যোগ হয়েছে`,newH2:n=>`আপনার শেষ ভিজিটের পর ${bn(n)}টি নতুন ড্র`,
   newP:"আপনার সংরক্ষিত বন্ডগুলো নিজে থেকেই মিলিয়ে দেখা হয়েছে। নিচে দেখুন।",
   share:"শেয়ার করুন",shareSaved:"ছবি সেভ হয়েছে।",shareFail:"ছবি শেয়ার করা যায়নি।",
@@ -636,6 +640,7 @@ function renderBoard(){
     h+=`<div class="tier${p.amt>=100000?" big":""}"><div class="t">${p[lang]}<b>${money(p.amt)}</b>${ns.length>2?`<span>${L().each(ns.length)}</span>`:""}</div>
       <div class="nums">${ns.map(n=>`<span${lastHits.has(n)?' class="hit"':""}>${num(n)}</span>`).join(" ")}</div></div>`;
   }
+  h+=`<div class="board-dl"><button class="ghost" type="button" data-dl="${d.no}"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L().dlDraw}</button><span id="dlDrawMsg"></span></div>`;
   $("board").innerHTML=h;
 }
 $("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-no]");if(!b)return;sel=+b.dataset.no;renderBoard()});
@@ -863,6 +868,28 @@ $("dlSheet").onclick=async()=>{
   try{await saveFile("my-prize-bonds.xlsx",data,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");keepMsg(L().keepOk(nums.length))}
   catch(e){keepMsg(e&&e.code==="declined"?L().keepNo:L().keepFail,!(e&&e.code==="declined"))}
 };
+
+/* ---------- winning numbers of one draw as an Excel sheet ---------- */
+$("board").addEventListener("click",async e=>{
+  const btn=e.target.closest("button[data-dl]");if(!btn)return;
+  const d=DRAWS.find(x=>x.no===+btn.dataset.dl);if(!d)return;
+  const msg=$("dlDrawMsg");msg.textContent=L().keepBusy;btn.disabled=true;
+  try{
+    const X=await loadXlsx();
+    const dl=claimDeadline(d.date);
+    const rows=[[L().xlTitle(d.no,fmtD(parseD(d.date)))],[L().claimBy(fmtD(dl))],[],[L().xlPrize,L().xlAmount,L().xlNumber,L().xlYours]];
+    for(const p of PRIZES)for(const n of d[p.k])rows.push([p[lang],p.amt,n,lastHits.has(n)?L().xlYes:""]);
+    const ws=X.utils.aoa_to_sheet(rows);
+    for(let r=5;r<=rows.length;r++){const c=ws["C"+r];if(c){c.t="s";c.z="@"}const a=ws["B"+r];if(a)a.z="#,##0"}
+    ws["!cols"]=[{wch:14},{wch:12},{wch:14},{wch:12}];
+    const wb=X.utils.book_new();X.utils.book_append_sheet(wb,ws,ordinal(d.no)+" draw");
+    const data=new Uint8Array(X.write(wb,{bookType:"xlsx",type:"array"}));
+    const name=`${ordinal(d.no)}-prize-bond-draw-result.xlsx`;
+    await saveFile(name,data,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    msg.textContent=L().dlDrawOk(name);
+  }catch(err){msg.textContent=err&&err.code==="declined"?L().keepNo:L().keepFail}
+  finally{btn.disabled=false}
+});
 
 /* ---------- share a win as a picture ---------- */
 function siteHost(){const h=location.hostname;return /^(https?:)$/.test(location.protocol)&&h&&!/claude|anthropic|localhost/.test(h)?h:""}
