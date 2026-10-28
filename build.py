@@ -168,6 +168,110 @@ def standalone(body):
             'body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n'
             + head_part + "</style>\n</head>\n<body>\n" + rest + "\n</body>\n</html>\n")
 
+
+# ---------------- per-draw "About this draw" section (unique content for each draw page) ----------------
+WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+WEEKDAYS_BN = ["সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার", "শনিবার", "রবিবার"]
+PRIZE_BN = {"first": "১ম", "second": "২য়", "third": "৩য়", "fourth": "৪র্থ", "fifth": "৫ম"}
+def bnum(x): return str(x).translate(BN)
+def bmoney(a): return money(a).translate(BN)
+def scheduled_for(held):
+    """The scheduled draw date (31 Jan / 30 Apr / 31 Jul / 31 Oct) a draw held on `held` belonged to."""
+    for y in (held.year, held.year - 1):
+        for m, dd in [(10, 31), (7, 31), (4, 30), (1, 31)]:
+            sd = datetime.date(y, m, dd)
+            if sd <= held and (held - sd).days <= 10:
+                return sd
+    return held
+
+def draw_about(d, ext):
+    n, held = d["no"], pdate(d["date"])
+    sched = scheduled_for(held)
+    moved = sched != held
+    dl = held.replace(year=held.year + 2)
+    over = dl < TODAY
+    idx = next(i for i, x in enumerate(slim) if x["no"] == n)
+    newer = slim[idx - 1] if idx > 0 else None
+    older = slim[idx + 1] if idx + 1 < len(slim) else None
+    nth_in_year = [1, 4, 7, 10].index(sched.month) + 1   # 1st..4th draw of that year
+    ord_en = ["first", "second", "third", "fourth"][nth_in_year - 1]
+    ord_bn = ["প্রথম", "দ্বিতীয়", "তৃতীয়", "চতুর্থ"][nth_in_year - 1]
+    # winning numbers grouped by lakh range
+    allnums = sorted((x, k) for k, _, _ in PRIZES for x in d[k])
+    groups = {}
+    for x, k in allnums:
+        groups.setdefault(int(x) // 100000, []).append(x)
+    rng_rows_en = rng_rows_bn = ""
+    for g in range(0, max(groups) + 1):
+        lo, hi = f"{g:02d}00000", f"{g:02d}99999"
+        if g == 0: lo = "0000001"
+        ns = groups.get(g, [])
+        rng_rows_en += f'<tr><td class="n">{lo}–{hi}</td><td class="n">{len(ns)}</td><td class="n">{" ".join(ns) or "–"}</td></tr>'
+        rng_rows_bn += f'<tr><td class="n">{bnum(lo)}–{bnum(hi)}</td><td class="n">{bnum(len(ns))}</td><td class="n">{" ".join(ns) or "–"}</td></tr>'
+    moved_en = (f" It was scheduled for {WEEKDAYS[sched.weekday()]} {fdate(sched)}, but that day was a holiday or weekend, so it was held on the next working day."
+                if moved else "")
+    moved_bn = (f" নির্ধারিত তারিখ ছিল {WEEKDAYS_BN[sched.weekday()]} {fdate_bn(sched)}, কিন্তু ওই দিন ছুটি থাকায় পরের কর্মদিবসে ড্র হয়।"
+                if moved else "")
+    claim_en = (f"The claim period for this draw ended on {fdate(dl)}." if over else
+                f"Prizes from this draw can be claimed until <b>{fdate(dl)}</b>, two years after the draw. 20% tax is deducted at source.")
+    claim_bn = (f"এই ড্রয়ের পুরস্কার দাবির মেয়াদ {fdate_bn(dl)} তারিখে শেষ হয়েছে।" if over else
+                f"এই ড্রয়ের পুরস্কার <b>{fdate_bn(dl)}</b> পর্যন্ত দাবি করা যাবে, ড্রয়ের দুই বছর পর পর্যন্ত। উৎসে ২০% কর কাটা হয়।")
+    nav_en, nav_bn = [], []
+    if older:
+        nav_en.append(f'<a href="{href(older["no"], ext)}">← {ordinal(older["no"])} draw ({fdate(pdate(older["date"]))})</a>')
+        nav_bn.append(f'<a href="{href(older["no"], ext)}">← {bnum(older["no"])}তম ড্র ({fdate_bn(pdate(older["date"]))})</a>')
+    if newer:
+        nav_en.append(f'<a href="{href(newer["no"], ext)}">{ordinal(newer["no"])} draw ({fdate(pdate(newer["date"]))}) →</a>')
+        nav_bn.append(f'<a href="{href(newer["no"], ext)}">{bnum(newer["no"])}তম ড্র ({fdate_bn(pdate(newer["date"]))}) →</a>')
+    else:
+        nav_en.append(f'<a href="prize-bond-draw-schedule{ext}">Next: {ordinal(n + 1)} draw, see the schedule →</a>')
+        nav_bn.append(f'<a href="prize-bond-draw-schedule{ext}">পরবর্তী: {bnum(n + 1)}তম ড্র, সময়সূচি দেখুন →</a>')
+    third, fourth = " and ".join(d["third"]), " and ".join(d["fourth"])
+    faq = [
+        (f"What is the 1st prize number of the {ordinal(n)} prize bond draw?",
+         f"{bnum(n)}তম প্রাইজবন্ড ড্রয়ের প্রথম পুরস্কারের নম্বর কত?",
+         f"The 1st prize of ৳6,00,000 in the {ordinal(n)} draw, held on {fdate_long(held)}, went to bond number {d['first'][0]}. "
+         f"The 2nd prize of ৳3,25,000 went to {d['second'][0]}, the 3rd prizes of ৳1,00,000 to {third}, and the 4th prizes of ৳50,000 to {fourth}. "
+         f"The same numbers win in every series.",
+         f"{fdate_bn(held)} অনুষ্ঠিত {bnum(n)}তম ড্রয়ে ৬,০০,০০০ টাকার প্রথম পুরস্কার পেয়েছে {d['first'][0]} নম্বর। "
+         f"৩,২৫,০০০ টাকার দ্বিতীয় পুরস্কার পেয়েছে {d['second'][0]}, ১,০০,০০০ টাকার তৃতীয় পুরস্কার {' ও '.join(d['third'])} এবং ৫০,০০০ টাকার চতুর্থ পুরস্কার {' ও '.join(d['fourth'])}। "
+         f"সব সিরিজে একই নম্বর পুরস্কার পায়।"),
+        (f"When was the {ordinal(n)} prize bond draw held?",
+         f"{bnum(n)}তম প্রাইজবন্ড ড্র কবে অনুষ্ঠিত হয়?",
+         f"On {WEEKDAYS[held.weekday()]} {fdate_long(held)}. It was the {ord_en} draw of {sched.year}.{moved_en}",
+         f"{WEEKDAYS_BN[held.weekday()]} {fdate_bn(held)}। এটি ছিল {bnum(sched.year)} সালের {ord_bn} ড্র।{moved_bn}"),
+        (f"What is the last date to claim a prize from the {ordinal(n)} draw?",
+         f"{bnum(n)}তম ড্রয়ের পুরস্কার দাবির শেষ তারিখ কবে?",
+         re.sub(r"<[^>]+>", "", claim_en), re.sub(r"<[^>]+>", "", claim_bn)),
+    ]
+    faq_en = "".join(f"<div><dt>{q}</dt><dd>{a}</dd></div>" for q, _, a, _ in faq)
+    faq_bn = "".join(f"<div><dt>{q}</dt><dd>{a}</dd></div>" for _, q, _, a in faq)
+    html_ = f'''  <section class="about-draw">
+    <div class="l-en" lang="en">
+      <h2>About the {ordinal(n)} draw</h2>
+      <p>The {ordinal(n)} draw of the 100 Taka prize bond was held on <b>{WEEKDAYS[held.weekday()]} {fdate(held)}</b>, the {ord_en} draw of {sched.year}.{moved_en} The 1st prize of ৳6,00,000 went to <b>{d['first'][0]}</b> and the 2nd prize of ৳3,25,000 to <b>{d['second'][0]}</b>. {claim_en}</p>
+      <h3>Winning numbers by range</h3>
+      <p class="src">Handy if you hold bonds in serial bundles: see at a glance which ranges had a winner.</p>
+      <div class="tbl"><table><thead><tr><th>Range</th><th>Winners</th><th>Numbers</th></tr></thead><tbody>{rng_rows_en}</tbody></table></div>
+      <h3>Questions about this draw</h3>
+      <dl class="faq-list">{faq_en}</dl>
+      <p class="draw-nav">{" ".join(nav_en)}</p>
+    </div>
+    <div class="l-bn" lang="bn">
+      <h2>{bnum(n)}তম ড্র সম্পর্কে</h2>
+      <p>১০০ টাকার প্রাইজবন্ডের {bnum(n)}তম ড্র অনুষ্ঠিত হয় <b>{WEEKDAYS_BN[held.weekday()]} {fdate_bn(held)}</b>, {bnum(sched.year)} সালের {ord_bn} ড্র।{moved_bn} ৬,০০,০০০ টাকার প্রথম পুরস্কার পেয়েছে <b>{d['first'][0]}</b> এবং ৩,২৫,০০০ টাকার দ্বিতীয় পুরস্কার <b>{d['second'][0]}</b>। {claim_bn}</p>
+      <h3>নম্বরের সীমা অনুযায়ী বিজয়ী নম্বর</h3>
+      <p class="src">ক্রমিক নম্বরের বান্ডেল থাকলে কাজে লাগবে: কোন সীমায় বিজয়ী নম্বর আছে এক নজরে দেখুন।</p>
+      <div class="tbl"><table><thead><tr><th>সীমা</th><th>বিজয়ী</th><th>নম্বর</th></tr></thead><tbody>{rng_rows_bn}</tbody></table></div>
+      <h3>এই ড্র নিয়ে প্রশ্ন</h3>
+      <dl class="faq-list">{faq_bn}</dl>
+      <p class="draw-nav">{" ".join(nav_bn)}</p>
+    </div>
+  </section>'''
+    ld = {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": "en", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, _, a, _ in faq]}
+    return html_, ld
+
 # ---------------- pages ----------------
 latest = slim[0]
 first_year, last_year = slim[-1]["date"][:4], latest["date"][:4]
@@ -212,8 +316,11 @@ for d in slim:
   </section>'''
     ld = [{"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "inLanguage": ["en", "bn"],
            "datePublished": d["date"], **({"url": f"{SITE_URL}/{href(n, '')}"} if SITE_URL else {})}]
-    pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), ld), False)
-    art_pages[slug(n)] = page(intro, ["ledger", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), artifact=True), False, ".html", artifact=True)
+    about, about_ld = draw_about(d, "")
+    pages[slug(n)] = page(intro, ["ledger", "about", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), ld + [about_ld]), False,
+                          extra_blocks={"about": about})
+    art_pages[slug(n)] = page(intro, ["ledger", "about", "checker", "claim"], n, d, "", head(title, desc, href(n, ""), artifact=True), False, ".html",
+                              artifact=True, extra_blocks={"about": draw_about(d, ".html")[0]})
 
 # ---------------- guide pages ----------------
 GUIDE_JS = """<script>
